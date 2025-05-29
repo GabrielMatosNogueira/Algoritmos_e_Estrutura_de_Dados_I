@@ -12,7 +12,7 @@ BIBLIOTECAS / DEPENDENCIAS
 ====================================================================================================================================================
 */
 #include <iostream>
-#include "mymatrix.hpp"
+#include "ED12.hpp"
 using namespace std;
 
 /*
@@ -31,24 +31,81 @@ METODO 01
 
 ====================================================================================================================================================
 */
-void Metodo01(void)
+void Metodo01(void) 
 {
     int inferior = 0;
     int superior = 0;
+    int linhas = 0;
+    int colunas = 0;
+    
+    // Assegura que o arquivo seja aberto no início
+    ofstream arquivo;
+    arquivo.open("metodo_01.txt");
+
+    if (!arquivo.is_open()) 
+    {
+        cout << "Erro ao abrir o arquivo 'metodo_01.txt' para escrita!" << endl;
+        end();
+        return;
+    }
 
     cout << "Digite o valor inferior do intervalo: ";
     cin >> inferior;
+    clearInputBuffer();
 
     cout << "Digite o valor superior do intervalo: ";
     cin >> superior;
+    clearInputBuffer();
 
-    Matrix<int> m1;
-    m1.matrix_randomIntGenerate(inferior, superior);
+    // Validação básica para o intervalo
+    if (inferior >= superior) {
+        cout << "O valor superior deve ser maior que o valor inferior. Tente novamente." << endl;
+        end();
+        return;
+    }
 
-    cout << "Matriz gerada com numeros aleatorios:" << endl;
-    m1.print();
+    cout << "Digite o numero de linhas: ";
+    cin >> linhas;
+    clearInputBuffer(); // Limpa o buffer após cin
 
-    pause("Apertar ENTER para continuar");
+    cout << "Digite o numero de colunas: ";
+    cin >> colunas;
+    clearInputBuffer(); // Limpa o buffer após cin
+
+    // Validação básica para linhas e colunas
+    if (linhas <= 0 || colunas <= 0) {
+        cout << "O numero de linhas e colunas deve ser maior que zero. Tente novamente." << endl;
+        end();
+        return;
+    }
+
+    // Escreve as dimensões no arquivo antes de gerar a matriz
+    arquivo << linhas << endl;
+    arquivo << colunas << endl;
+
+    cout << "\nMatriz gerada com numeros aleatorios:" << endl;
+
+    // Cria uma instância da classe matriz com as dimensões fornecidas
+    matriz<int> minhaMatriz(linhas, colunas);
+
+    // Preenche a matriz com números aleatórios
+    minhaMatriz.randomIntGenerate(inferior, superior);
+
+    // Imprime a matriz no console
+    minhaMatriz.print();
+
+    // Escreve o conteúdo da matriz no arquivo
+    for (int i = 0; i < linhas; ++i) {
+        for (int j = 0; j < colunas; ++j) {
+            arquivo << minhaMatriz.getElemento(i, j) << "\t";
+        }
+        arquivo << endl;
+    }
+
+    arquivo.close(); // Fecha o arquivo
+    cout << "\nDados da matriz salvos em 'metodo_01.txt'." << endl;
+    
+    end(); // Chama sua função para pausar
 }
 
 /*
@@ -59,17 +116,9 @@ METODO 02
 */
 void Metodo02(void)
 {
-    // definir dados
-    Matrix<int> matrix(2, 2, 0);
-    // identificar
-    cout << endl
-         << "Method_02 - v0.0" << endl;
-    // ler dados
-    matrix.read(); // CORRECAO: Utilizacao de getchar ( ) na funcao read()
-    // mostrar dados
-    matrix.print();
+
     // encerrar
-    pause("Apertar ENTER para continuar");
+    end();
 }
 
 /*
@@ -80,19 +129,9 @@ METODO 03
 */
 void Metodo03(void)
 {
-    // definir dados
-    Matrix<int> matrix(2, 2, 0);
-    // identificar
-    cout << endl
-         << "Method_03 - v0.0" << endl;
-    // ler dados
-    matrix.read();
-    // mostrar dados
-    matrix.print();
-    // gravar dados
-    matrix.fprint("MATRIX1.TXT");
+
     // encerrar
-    pause("Apertar ENTER para continuar");
+    end();
 }
 
 /*
@@ -103,17 +142,9 @@ METODO 04
 */
 void Metodo04(void)
 {
-    // definir dados
-    Matrix<int> matrix(1, 1, 0);
-    // identificar
-    cout << endl
-         << "Method_04 - v0.0" << endl;
-    // ler dados
-    matrix.fread("MATRIX1.TXT");
-    // mostrar dados
-    matrix.print();
+
     // encerrar
-    pause("Apertar ENTER para continuar");
+    end();
 }
 
 /*
@@ -124,26 +155,8 @@ METODO 05
 */
 void Metodo05(void)
 {
-    // definir dados
-    Matrix<int> int_matrix1(1, 1, 0);
-    Matrix<int> int_matrix2(1, 1, 0);
-    // identificar
-    cout << endl
-         << "Method_05 - v0.0" << endl;
-    // ler dados
-    int_matrix1.fread("MATRIX1.TXT");
-    // mostrar dados
-    cout << "\nOriginal\n"
-         << endl;
-    int_matrix1.print();
-    // copiar dados
-    int_matrix2 = int_matrix1; // Copia de dados se faz por meio de "=" nao "<<"???
-    // mostrar dados
-    cout << "\nCopia\n"
-         << endl;
-    int_matrix2.print();
     // encerrar
-    pause("Apertar ENTER para continuar");
+    end();
 }
 
 /*
@@ -154,27 +167,8 @@ METODO 06
 */
 void Metodo06(void)
 {
-    // definir dados
-    Matrix<int> int_matrix(2, 2, 0);
-    int_matrix.set(0, 0, 0);
-    int_matrix.set(0, 1, 0);
-    int_matrix.set(1, 0, 0);
-    int_matrix.set(1, 1, 0);
-    // identificar
-    cout << endl
-         << "Method_06 - v0.0" << endl;
-    // mostrar dados
-    int_matrix.print();
-    // testar condicao
-    cout << "Zeros = " << int_matrix.isZeros() << endl;
-    // ler dados
-    int_matrix.fread("MATRIX1.TXT");
-    // mostrar dados
-    int_matrix.print();
-    // testar condicao
-    cout << "Zeros = " << int_matrix.isZeros() << endl;
     // encerrar
-    pause("Apertar ENTER para continuar");
+    end();
 }
 
 /*
@@ -185,36 +179,8 @@ METODO 07
 */
 void Metodo07(void)
 {
-    // definir dados
-    Matrix<int> int_matrix1(1, 1, 0);
-    Matrix<int> int_matrix2(1, 1, 0);
-    // identificar
-    cout << endl
-         << "Method_07 - v0.0" << endl;
-    // ler dados
-    int_matrix1.fread("MATRIX1.TXT");
-    // mostrar dados
-    cout << "\nMatrix_1\n";
-    int_matrix1.print();
-    // copiar dados
-    int_matrix2 = int_matrix1;
-    // mostrar dados
-    cout << "\nMatrix_2\n";
-    int_matrix2.print();
-    // testar condicao
-    cout << "Diferentes = " << (int_matrix1 != int_matrix2) << endl;
-    // alterar dados
-    int_matrix2.set(0, 0, (-1));
-    // mostrar dados
-    cout << "\nMatrix_1\n";
-    int_matrix1.print();
-    // mostrar dados
-    cout << "\nMatrix_2\n";
-    int_matrix2.print();
-    // testar condicao
-    cout << "Diferentes = " << (int_matrix1 != int_matrix2) << endl;
     // encerrar
-    pause("Apertar ENTER para continuar");
+    end();
 }
 
 /*
@@ -225,30 +191,8 @@ METODO 08
 */
 void Metodo08(void)
 {
-    // definir dados
-    Matrix<int> int_matrix1(1, 1, 0); // Removacao da declaracao de x e y no comeco, por que as declaracoes estao duplicadas
-    Matrix<int> int_matrix2(1, 1, 0);
-    Matrix<int> int_matrix3(1, 1, 0);
-    // identificar
-    cout << endl
-         << "Method_08 - v0.0" << endl;
-    // ler dados
-    int_matrix1.fread("MATRIX1.TXT");
-    // mostrar dados
-    cout << "\nMatrix_1\n";
-    int_matrix1.print();
-    // copiar dados
-    int_matrix2 = int_matrix1;
-    // mostrar dados
-    cout << "\nMatrix_2\n";
-    int_matrix2.print();
-    // operar dados
-    int_matrix3 = int_matrix1 - int_matrix2;
-    // mostrar dados
-    cout << "\nMatrix_3\n";
-    int_matrix3.print();
     // encerrar
-    pause("Apertar ENTER para continuar");
+    end();
 }
 
 /*
@@ -259,32 +203,8 @@ METODO 09
 */
 void Metodo09(void)
 {
-    // definir dados
-    Matrix<int> int_matrix1(2, 2, 0);
-    int_matrix1.set(0, 0, 1);
-    int_matrix1.set(0, 1, 0);
-    int_matrix1.set(1, 0, 0);
-    int_matrix1.set(1, 1, 1);
-    Matrix<int> int_matrix2(1, 1, 0);
-    Matrix<int> int_matrix3(1, 1, 0);
-    // identificar
-    cout << endl
-         << "Method_09 - v0.0" << endl;
-    // ler dados
-    int_matrix2.fread("MATRIX1.TXT");
-    // mostrar dados
-    cout << "\nMatrix_1\n";
-    int_matrix1.print();
-    // mostrar dados
-    cout << "\nMatrix_2\n";
-    int_matrix2.print();
-    // operar dados
-    int_matrix3 = int_matrix1 * int_matrix2;
-    // mostrar dados
-    cout << "\nMatrix_3\n";
-    int_matrix3.print();
     // encerrar
-    pause("Apertar ENTER para continuar");
+    end();
 }
 
 /*
@@ -295,31 +215,9 @@ METODO 10
 */
 void Metodo10(void)
 {
-    // definir dados
-    Matrix<int> int_matrix(3, 3, 0);
-    //int x = 0;
-    //int y = 0;
-    // identificar
-    cout << endl
-         << "Method_10 - v0.0" << endl;
-    // ler dados
-    int_matrix.fread("MATRIX1.TXT");
-    // mostrar dados
-    cout << "\nMatrix\n";
-    int_matrix.print();
-    // operar dados
-    for (int x = 0; x < int_matrix.getRows(); x = x + 1)
-    {
-        for (int y = 0; y < int_matrix.getColumns(); y = y + 1)
-        {
-            int_matrix.set(x, y, int_matrix.get(x, y) * (-1));
-        } // end for
-    } // end for
-    // mostrar dados
-    cout << "\nMatrix\n";
-    int_matrix.print();
+
     // encerrar
-    pause("Apertar ENTER para continuar");
+    end();
 }
 
 /*
