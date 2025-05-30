@@ -379,6 +379,39 @@ void method_1015(void)
     // Identificacao
     IO_start("\nMetodo 1015\n");
 
+FILE *fp = fopen("DADOS_1.txt", "r");
+    double matriz[MAX][2];
+    int n = 0, i, j;
+    double temp1, temp2;
+
+    if (fp == NULL) {
+        printf("Erro ao abrir o arquivo!\n");
+        return;
+    }
+    while (fscanf(fp, "%lf %lf", &matriz[n][0], &matriz[n][1]) == 2 && n < MAX) {
+        n++;
+    }
+    fclose(fp);
+
+    // Ordenação igual ao método 04
+    for (i = 0; i < n - 1; i++) {
+        for (j = 0; j < n - i - 1; j++) {
+            if (matriz[j][0] > matriz[j+1][0] || 
+                (matriz[j][0] == matriz[j+1][0] && matriz[j][1] > matriz[j+1][1])) {
+                temp1 = matriz[j][0];
+                temp2 = matriz[j][1];
+                matriz[j][0] = matriz[j+1][0];
+                matriz[j][1] = matriz[j+1][1];
+                matriz[j+1][0] = temp1;
+                matriz[j+1][1] = temp2;
+            }
+        }
+    }
+
+    // Chamar a função de distância
+    double distancia = calcularDistancia(matriz, n, 2);
+    printf("Distância entre o primeiro e último par: %.4lf\n", distancia);
+
     // Encerramento
     IO_end();
 }
