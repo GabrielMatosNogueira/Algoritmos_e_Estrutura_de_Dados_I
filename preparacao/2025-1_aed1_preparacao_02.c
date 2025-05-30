@@ -311,9 +311,43 @@ void method_1014(void)
     IO_start("\nMetodo 1014\n");
 
     // Declaracao de variaveis
-    double Matriz[2][2] = {{0.0, 0.0}, {0.0, 0.0}};
+    FILE *fp = fopen("DADOS_1.txt", "r");
+    double matriz[MAX][2];
+    int n = 0, i, j;
+    double temp1, temp2;
+    
+    if (fp == NULL) {
+        printf("Erro ao abrir o arquivo!\n");
+        return;
+    }
 
-    ordenacaoMatrizCrescente(Matriz);
+    // Leitura dos pares até o final do arquivo ou até MAX pares
+    while (fscanf(fp, "%lf %lf", &matriz[n][0], &matriz[n][1]) == 2 && n < MAX) {
+        n++;
+    }
+    fclose(fp);
+
+    // Ordenação: Bubble Sort com desempate
+    for (i = 0; i < n - 1; i++) {
+        for (j = 0; j < n - i - 1; j++) {
+            if (matriz[j][0] > matriz[j+1][0] || 
+                (matriz[j][0] == matriz[j+1][0] && matriz[j][1] > matriz[j+1][1])) {
+                // Trocar linhas inteiras
+                temp1 = matriz[j][0];
+                temp2 = matriz[j][1];
+                matriz[j][0] = matriz[j+1][0];
+                matriz[j][1] = matriz[j+1][1];
+                matriz[j+1][0] = temp1;
+                matriz[j+1][1] = temp2;
+            }
+        }
+    }
+
+    // Mostrar resultado
+    printf("Matriz ordenada:\n");
+    for (i = 0; i < n; i++) {
+        printf("(%.2lf, %.2lf)\n", matriz[i][0], matriz[i][1]);
+    }
 
     // Encerramento
     IO_end();
