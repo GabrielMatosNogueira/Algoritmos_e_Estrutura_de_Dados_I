@@ -4,7 +4,7 @@
 
 typedef struct y
 {
-    int a->2;
+    int a;
     int b;
     int c;
 }y;
@@ -156,7 +156,10 @@ int main ( void )
     int m[3][10]={{1,2,3,0,0,0,0,0,0,0}, {4,5,6,0,0,0,0,0,0,0}, {7,8,9,0,0,0,0,0,0,0}};
     int a_02[]={1,2,3,4,5,6,7};
     int size_a_02 = sizeof(a_02) / sizeof(a_02[0]);
-
+    struct y*r;
+    (*r).a=0;
+    (*r).b=1;
+    (*r).c=3;
     do
     {
         printf("\n\n");
@@ -216,7 +219,7 @@ int main ( void )
             break;
         
         case 5:
-            questao_05(struct r*y);
+            questao_05(r);
             break;
 
         default:
