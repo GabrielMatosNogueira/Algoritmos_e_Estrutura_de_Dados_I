@@ -85,6 +85,8 @@ bool IO_trace   = true;             // inicialmente habilitado
 
 // ---------------------- para tratamento de erros
 
+using namespace std;
+
 void IO_methods (int ED)
 {
 	int i = 0;
@@ -92,6 +94,7 @@ void IO_methods (int ED)
     	if (ED < 10)
 	{
         	ED = (ED * 100)+10;
+		cout << endl << "Menu de opcoes:";
         	for (i = 0; i < 11; i = i + 1)
         	{
 
@@ -114,7 +117,7 @@ void IO_methods (int ED)
 	else
 	{
 		ED=(ED*100)+10;
-        	printf("\nMenu de opcoes:");
+        	cout << endl << "Menu de opcoes:";
         	for (i = 0; i < 11; i = i + 1)
         	{
 
@@ -126,7 +129,7 @@ void IO_methods (int ED)
 
 			else
 			{
-				printf("\n%d - %d", i, ED);
+				printf("\n%d - %d", i, ED);		
 				ED = ED + 1;
 			}
 		}
