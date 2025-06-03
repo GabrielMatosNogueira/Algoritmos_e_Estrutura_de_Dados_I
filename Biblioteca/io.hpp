@@ -88,11 +88,11 @@ bool IO_trace   = true;             // inicialmente habilitado
 void IO_methods (int ED)
 {
 	int i = 0;
-
+	int exercicio=ED;
     	if (ED < 10)
 	{
-        	ED = ED * 100;
-        	for (i = 0; i < 13; i = i + 1)
+        	ED = (ED * 100)+10;
+        	for (i = 0; i < 11; i = i + 1)
         	{
 
             	if (i == 0)
@@ -107,13 +107,15 @@ void IO_methods (int ED)
 	                ED = ED + 1;
 	            }
 	        }
+		printf("\n12 - 0%dE1", exercicio);
+		printf("\n13 - 0%dE2", exercicio);
 	}
     
 	else
 	{
 		ED=(ED*100)+10;
         	printf("\nMenu de opcoes:");
-        	for (i = 0; i < 13; i = i + 1)
+        	for (i = 0; i < 11; i = i + 1)
         	{
 
             		if (i == 0)
@@ -128,6 +130,8 @@ void IO_methods (int ED)
 				ED = ED + 1;
 			}
 		}
+		printf("\n12 - %dE1", exercicio);
+		printf("\n13 - %dE2", exercicio);
 	}
 }
 
