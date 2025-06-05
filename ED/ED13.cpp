@@ -5,7 +5,7 @@
 
 using namespace std;
 
-void metodo01 ()
+void metodo01 ( void )
 {
 	contato contato1;
 	string name = "";
@@ -17,13 +17,16 @@ void metodo01 ()
 	cout << endl;	
 
 	contato1.setName(name);
+	getchar();
+
 	contato1.showName();
 	cout << endl;
 
+	IO_print("Aperte ENTER para terminar");
 	getchar();
 }
 
-void metodo02 ()
+void metodo02 ( void )
 {
 	string telefone="";
 	contato contato1;
@@ -32,6 +35,26 @@ void metodo02 ()
 	telefone = IO_readstring("Digite o numero de telefone desejado: ");
 	contato1.setPhone(telefone);
 	contato1.showPhone();
+
+	IO_print("Aperte ENTER para terminar");
+	getchar();	
+}
+
+void metodo03 ( void )
+{
+	string telefone="";
+	contato contato1;
+	bool verification=false;
+	
+	cout << endl;
+	telefone = IO_readstring("Digite o numero do telefone que deseja verificar: ");
+	
+	contato1.setPhone(telefone);
+	contato1.showPhone();
+	contato1.isValidPhone(telefone);
+
+	IO_print("Aperte ENTER para terminar");
+	getchar();		
 }
 
 int main ( void )
@@ -49,6 +72,10 @@ int main ( void )
 
 			case 2:
 			metodo02();
+			break;
+
+			case 3:
+			metodo03();
 			break;
 		}
 
