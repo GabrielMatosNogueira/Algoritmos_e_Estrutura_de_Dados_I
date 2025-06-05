@@ -12,14 +12,16 @@ struct contato
 private:
     string nome;
     string telefone;
+    int quantidadeTelefones;
     bool OK;
 
 public:
-    contato()
+    contato(void)
     {
         this->nome = "";
         this->telefone = "";
         this->OK = false;
+        this->quantidadeTelefones=0;
     }
 
     void setName(const string name)
@@ -27,7 +29,7 @@ public:
         this->nome = name;
     }
 
-    void showName()
+    void showName(void)
     {
         cout << "Nome recebido: " << this->nome;
     }
@@ -45,7 +47,7 @@ public:
         }
     }
 
-    void showPhone()
+    void showPhone(void)
     {
         cout << endl
              << "Telefone lido: " << this->telefone << endl;
@@ -56,7 +58,7 @@ public:
         int i = 0;
         int tamanho = strlen(phone.c_str());
 
-        if (phone == "")
+        if (phone.empty())
         {
             IO_print("Numero vazio.");
         }
@@ -104,22 +106,24 @@ public:
 
             else
             {
+                this->OK=false;
+                
+                if(OK==false){IO_print("\nNumero invalido!\n");};
                 if (tamanho == 9)
                 {
-                    IO_print("Insira o DDD da sua regiao sem utilizar '()'");
+                    IO_print("Insira o DDD da sua regiao sem utilizar '()'\n");
                 }
 
                 if (tamanho == 11)
                 {
-                    IO_print("\nUse travessao para separar o numero de telefone na quarta posicao depois do '9'\n");
+                    IO_print("\nUse travessao para separar o numero de telefone emtre a quarta e a quinta posicao depois do '9'\n");
                 }
 
                 if (tamanho == 13 || tamanho == 14)
                 {
                     IO_print("\nNao insira o DDI\n");
                 }
-                this->OK=false;
-                return;
+                
             }
         }
 
@@ -127,9 +131,37 @@ public:
         {
             IO_print("\nNumero valido!\n");
         }
+    }
+
+    void readFromFile(const string filename)
+    {
+        ifstream arquivo (filename);
+        if(arquivo.is_open())
+        {
+            arquivo >> this->nome;
+            arquivo.close();
+        }
         else
         {
-            IO_print("\nNumero invalido!\n");
+            IO_print("\nErro ao abrir o arquivo.");
         }
+
+    }
+
+    void getReadNameFromFile(void)
+    {
+        cout << endl << "Nome lido do arquivo: " << this->nome;
+    }
+
+    void writeToFile (const string filename)
+    {
+        string nome;
+        ofstream arquivo (filename);
+
+        nome=IO_readstring("\nDigite o nome que deseja guardar no arquivo: ");
+
+        arquivo << nome;
+
+        arquivo.close();
     }
 };
