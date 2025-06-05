@@ -1,167 +1,147 @@
-#include <iostream>
-#include <string>
-#include <cstring>
 #include "io.hpp"
-
-#define MAX 100
+#include "ED13.hpp"
+#include <iostream>
+#include <stdio.h>
 
 using namespace std;
 
-struct contato
+void metodo01 ( void )
 {
-private:
-    string nome;
-    string telefone;
-    int quantidadeTelefones;
-    bool OK;
+	contato contato1;
+	string name = "";
+	
+	cout << endl << "Digite o nome do contato"
+	" (sem espacos, utilize '_' entre nome e sobrenomes): ";
 
-public:
-    contato(void)
-    {
-        this->nome = "";
-        this->telefone = "";
-        this->OK = false;
-        this->quantidadeTelefones=0;
-    }
+	cin >> name;
+	cout << endl;	
 
-    void setName(const string name)
-    {
-        this->nome = name;
-    }
+	contato1.setName(name);
+	getchar();
 
-    void showName(void)
-    {
-        cout << "Nome recebido: " << this->nome;
-    }
+	contato1.showName();
+	cout << endl;
 
-    void setPhone(const string phone)
-    {
-        if (phone == "")
-        {
-            cout << "Numero de telefone vazio." << endl;
-        }
+	IO_print("Aperte ENTER para terminar");
+	getchar();
+}
 
-        else
-        {
-            this->telefone = phone;
-        }
-    }
+void metodo02 ( void )
+{
+	string telefone="";
+	contato contato1;
+	
+	cout << endl;
+	telefone = IO_readstring("Digite o numero de telefone desejado: ");
+	contato1.setPhone(telefone);
+	contato1.showPhone();
 
-    void showPhone(void)
-    {
-        cout << endl
-             << "Telefone lido: " << this->telefone << endl;
-    }
+	IO_print("Aperte ENTER para terminar");
+	getchar();	
+}
 
-    void isValidPhone(const string &phone)
-    {
-        int i = 0;
-        int tamanho = strlen(phone.c_str());
+void metodo03 ( void )
+{
+	string telefone="";
+	contato contato1;
+	
+	cout << endl;
+	telefone = IO_readstring("Digite o numero do telefone que deseja verificar: ");
+	
+	contato1.setPhone(telefone);
+	contato1.showPhone();
+	contato1.isValidPhone(telefone);
 
-        if (phone.empty())
-        {
-            IO_print("Numero vazio.");
-        }
+	IO_print("Aperte ENTER para terminar");
+	getchar();		
+}
 
-        /*
-        De acordo com a ANATEL, telefones moveis possuem nove digitos atualmente,
-        desconsiderando o DDD
-        Considerando o DDD: 2 numeros
-        Considerando o numero: 9 digitos + 1('-')
-        Total: 12 caracteres
+void metodo04 ( void )
+{
+	contato contato1;
+	string nome;
 
-        EXEMPLO: 31971585300
-        */
+	nome=IO_readstring("Digite o nome do arquivo (com a extensao) que deseja ler: ");
 
-        else
-        {
-            if (tamanho == 12)
-            {
-                for (i = 0; i < 13; i = i + 1)
-                {
-                    if (phone[7] != '-')
-                    {
-                        cout << endl
-                             << "Use travessao para separas os algarismos antes do " << phone[i] << " na posicao [" << i << "]" << endl;
-                        this->OK = false;
-                        return;
-                    }
+	if(nome.empty())
+	{
+		do
+		{
+			IO_print("\nNao foi possivel obter o nome do arquivo, tente novamente.");
+			nome=IO_readstring("\nDigite o nome do arquivo (com a extensao) que deseja ler: ");
+		} while (!(nome.empty()));
+	}
+	else
+	{
+		contato1.readFromFile(nome);
+		contato1.getReadNameFromFile();
+		
+		cout<< endl;
+		IO_print("Aperte ENTER para terminar");
+		getchar();	
+	}
 
-                    if (phone[i] == '0' || phone[i] == '1' || phone[i] == '2' || phone[i] == '3' || phone[i] == '4' || phone[i] == '5' || phone[i] == '6' || phone[i] == '7' || phone[i] == '8' || phone[i] == '9' || phone[7] == '-')
-                    {
-                        //cout << endl;
-                        //     << "Caractere [" << phone[i] << "] validado." << endl;
-                        this->OK = true;
-                    }
+}
 
-                    else
-                    {
-                        cout << endl
-                             << "Caractere [" << phone[i] << "] e' invalido." << endl;
-                        this->OK = false;
-                        return;
-                    }
-                }
-            }
+void metodo05 ( void )
+{
+	string filename;
+	contato contato1;
 
-            else
-            {
-                this->OK=false;
-                
-                if(OK==false){IO_print("\nNumero invalido!\n");};
-                if (tamanho == 9)
-                {
-                    IO_print("Insira o DDD da sua regiao sem utilizar '()'\n");
-                }
+	filename=IO_readstring("\nDigite o nome do arquivo: ");
 
-                if (tamanho == 11)
-                {
-                    IO_print("\nUse travessao para separar o numero de telefone emtre a quarta e a quinta posicao depois do '9'\n");
-                }
+	if(filename.empty())
+	{
+		do
+		{
+			filename=IO_readstring("\nNao foi possivel ler o nome do arquivo, tente novamente: ");
+		} while (!(filename.empty()));
+		
+	}
+	else
+	{
+		contato1.writeToFile(filename);
+		contato1.readFromFile(filename);
+		contato1.getReadNameFromFile();
+	}
+}
 
-                if (tamanho == 13 || tamanho == 14)
-                {
-                    IO_print("\nNao insira o DDI\n");
-                }
-                
-            }
-        }
+void metodo06 ( void )
+{
+	
+}
 
-        if(OK==true)
-        {
-            IO_print("\nNumero valido!\n");
-        }
-    }
+int main ( void )
+{
+	int opcao=0;
+	do
+	{
+		IO_methods(13);
+		opcao=IO_readint("\nDigite a opcao desejada: ");
+		switch(opcao)
+		{
+			case 1:
+			metodo01();
+			break;
 
-    void readFromFile(const string filename)
-    {
-        ifstream arquivo (filename);
-        if(arquivo.is_open())
-        {
-            arquivo >> this->nome;
-            arquivo.close();
-        }
-        else
-        {
-            IO_print("\nErro ao abrir o arquivo.");
-        }
+			case 2:
+			metodo02();
+			break;
 
-    }
+			case 3:
+			metodo03();
+			break;
 
-    void getReadNameFromFile(void)
-    {
-        cout << endl << "Nome lido do arquivo: " << this->nome;
-    }
+			case 4:
+			metodo04();
+			break;
 
-    void writeToFile (const string filename)
-    {
-        string nome;
-        ofstream arquivo (filename);
+			case 5:
+			metodo05();
+			break;
+		}
 
-        nome=IO_readstring("\nDigite o nome que deseja guardar no arquivo: ");
-
-        arquivo << nome;
-
-        arquivo.close();
-    }
-};
+	}while (opcao!=0);
+	
+	return 0;
+}
