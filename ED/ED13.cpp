@@ -44,7 +44,6 @@ void metodo03 ( void )
 {
 	string telefone="";
 	contato contato1;
-	bool verification=false;
 	
 	cout << endl;
 	telefone = IO_readstring("Digite o numero do telefone que deseja verificar: ");
@@ -55,6 +54,29 @@ void metodo03 ( void )
 
 	IO_print("Aperte ENTER para terminar");
 	getchar();		
+}
+
+void metodo04 ( void )
+{
+	contato contato1;
+	string nome;
+
+	nome=IO_readstring("Digite o nome do arquivo (com a extensao) que deseja ler: ");
+
+	if(nome.empty())
+	{
+		do
+		{
+			IO_print("\nNao foi possivel obter o nome do arquivo, tente novamente.");
+			nome=IO_readstring("\nDigite o nome do arquivo (com a extensao) que deseja ler: ");
+		} while (!(nome.empty()));
+	}
+	else
+	{
+		contato1.readFromFile(nome);
+		contato1.showReadNameFromFile();
+	}
+
 }
 
 int main ( void )
