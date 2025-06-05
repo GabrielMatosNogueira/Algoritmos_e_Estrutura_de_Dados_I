@@ -74,9 +74,18 @@ void metodo04 ( void )
 	else
 	{
 		contato1.readFromFile(nome);
-		contato1.showReadNameFromFile();
+		contato1.getReadNameFromFile();
+		
+		cout<< endl;
+		IO_print("Aperte ENTER para terminar");
+		getchar();	
 	}
 
+}
+
+void metodo05 ( void )
+{
+	
 }
 
 int main ( void )
@@ -98,6 +107,10 @@ int main ( void )
 
 			case 3:
 			metodo03();
+			break;
+
+			case 4:
+			metodo04();
 			break;
 		}
 
