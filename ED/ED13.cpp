@@ -104,11 +104,64 @@ void metodo05 ( void )
 		contato1.readFromFile(filename);
 		contato1.getReadNameFromFile();
 	}
+
+	cout << endl;
+	IO_print("Aperte ENTER para terminar");
+	getchar();	
 }
 
+/*
+	Metodo para inserir n numeros de telefone em um contato (objeto)
+*/
 void metodo06 ( void )
 {
-	
+	bool verificador=false;
+	contato contato1;
+	string nome;
+	string telefone;
+	string telefone2;
+
+	nome= IO_readstring("\nDigite o nome do contato (sem espacos, utilize '_' entre nome e sobrenomes): ");
+	contato1.setName(nome);
+	contato1.showName();
+
+	verificador=IO_readbool("\nDeseja inserir dois numeros de telefone? (1 = Sim / 0 = Nao): ");
+
+	if (verificador)
+	{
+		do
+		{
+			telefone = IO_readstring("\nDigite o numero de telefone: ");
+			verificador = contato1.isValidPhone(telefone);
+		} while (verificador == false);
+
+		contato1.setPhone(telefone);
+		contato1.showPhone();
+
+		do
+		{
+			telefone2 = IO_readstring("\nDigite o segundo numero de telefone: ");
+			verificador = contato1.isValidPhone(telefone2);
+		} while (verificador == false);
+		
+		contato1.setPhone2(telefone2);
+		contato1.showPhone2();
+	}
+
+	IO_print("Aperte ENTER para terminar");
+	getchar();	
+}
+
+/*
+	Metodo para checar quantos numeros de telefones estao associados a cada contato (objeto)
+*/
+void metodo07 ( void )
+{
+	int quantidade=0;
+	contato contato1;
+
+
+
 }
 
 int main ( void )
@@ -116,7 +169,7 @@ int main ( void )
 	int opcao=0;
 	do
 	{
-		IO_methods(13);
+		IO_methods(13);									// Funcao para implementar o menu de opcoes de acordo com o ED (Finalmente :)
 		opcao=IO_readint("\nDigite a opcao desejada: ");
 		switch(opcao)
 		{
@@ -138,6 +191,10 @@ int main ( void )
 
 			case 5:
 			metodo05();
+			break;
+
+			case 6:
+			metodo06();
 			break;
 		}
 
