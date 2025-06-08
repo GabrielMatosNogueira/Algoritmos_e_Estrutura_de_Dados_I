@@ -12,6 +12,7 @@ struct contato
 private:
     string nome;
     string telefone;
+    string telefone2;
     int quantidadeTelefones;
     bool OK;
 
@@ -20,6 +21,7 @@ public:
     {
         this->nome = "";
         this->telefone = "";
+        this->telefone2 = "";
         this->OK = false;
         this->quantidadeTelefones=0;
     }
@@ -53,14 +55,22 @@ public:
              << "Telefone lido: " << this->telefone << endl;
     }
 
-    void isValidPhone(const string &phone)
+    void showPhone2(void)
     {
-        int i = 0;
-        int tamanho = strlen(phone.c_str());
+        cout << endl
+             << "Telefone 2 lido: " << this->telefone2 << endl;
+    }
+
+    // Valida o formato do telefone conforme regras da ANATEL
+    bool isValidPhone(const string &phone)
+    {
+        int tamanho = phone.length();
 
         if (phone.empty())
         {
             IO_print("Numero vazio.");
+            this->OK = false;
+            return false;
         }
 
         /*
@@ -70,68 +80,78 @@ public:
         Considerando o numero: 9 digitos + 1('-')
         Total: 12 caracteres
 
-        EXEMPLO: 31971585300
+        EXEMPLO: 3197158-5300
         */
+
+        // Formato esperado: DDD + 5 dígitos + '-' + 4 dígitos (ex: 3197158-5300)
+        if (tamanho == 12)
+        {
+            // Verifica se o caractere na posição 7 é '-'
+            if (phone[7] != '-')
+            {
+                cout << endl
+                     << "Use travessao para separar os algarismos antes do " << phone[7] << " na posicao [7]" << endl;
+                this->OK = false;
+                return false;
+            }
+
+            // Verifica se todos os outros caracteres são dígitos
+            for (int i = 0; i < tamanho; ++i)
+            {
+                if (i == 7) continue; // Posição do '-'
+                if (!isdigit(phone[i]))
+                {
+                    cout << endl
+                         << "Caractere [" << phone[i] << "] e' invalido na posicao [" << i << "]." << endl;
+                    this->OK = false;
+                    return false;
+                }
+            }
+            this->OK = true;
+            IO_print("\nNumero valido!\n");
+            return true;
+        }
+        else
+        {
+            this->OK = false;
+            IO_print("\nNumero invalido!\n");
+
+            if (tamanho == 9)
+            {
+                IO_print("Insira o DDD da sua regiao sem utilizar '()'\n");
+            }
+            else if (tamanho == 11)
+            {
+                IO_print("\nUse travessao para separar o numero de telefone entre a quarta e a quinta posicao depois do '9'\n");
+            }
+            else if (tamanho == 13 || tamanho == 14)
+            {
+                IO_print("\nNao insira o DDI\n");
+            }
+            return false;
+        }
+    }
+
+    void setPhone2(const string phone2)
+    {
+        if (phone2 == "")
+        {
+            cout << "Numero de telefone vazio." << endl;
+        }
 
         else
         {
-            if (tamanho == 12)
-            {
-                for (i = 0; i < 13; i = i + 1)
-                {
-                    if (phone[7] != '-')
-                    {
-                        cout << endl
-                             << "Use travessao para separas os algarismos antes do " << phone[i] << " na posicao [" << i << "]" << endl;
-                        this->OK = false;
-                        return;
-                    }
-
-                    if (phone[i] == '0' || phone[i] == '1' || phone[i] == '2' || phone[i] == '3' || phone[i] == '4' || phone[i] == '5' || phone[i] == '6' || phone[i] == '7' || phone[i] == '8' || phone[i] == '9' || phone[7] == '-')
-                    {
-                        //cout << endl;
-                        //     << "Caractere [" << phone[i] << "] validado." << endl;
-                        this->OK = true;
-                    }
-
-                    else
-                    {
-                        cout << endl
-                             << "Caractere [" << phone[i] << "] e' invalido." << endl;
-                        this->OK = false;
-                        return;
-                    }
-                }
-            }
-
-            else
-            {
-                this->OK=false;
-                
-                if(OK==false){IO_print("\nNumero invalido!\n");};
-                if (tamanho == 9)
-                {
-                    IO_print("Insira o DDD da sua regiao sem utilizar '()'\n");
-                }
-
-                if (tamanho == 11)
-                {
-                    IO_print("\nUse travessao para separar o numero de telefone emtre a quarta e a quinta posicao depois do '9'\n");
-                }
-
-                if (tamanho == 13 || tamanho == 14)
-                {
-                    IO_print("\nNao insira o DDI\n");
-                }
-                
-            }
-        }
-
-        if(OK==true)
-        {
-            IO_print("\nNumero valido!\n");
+            this->telefone2 = phone2;
+            this->quantidadeTelefones++;
         }
     }
+
+    void getPhone2(void)
+    {
+        cout << endl
+             << "Telefone 2 lido: " << this->telefone2 << endl;
+    }
+    
 
     void readFromFile(const string filename)
     {
