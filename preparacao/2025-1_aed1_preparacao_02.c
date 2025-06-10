@@ -3,7 +3,7 @@ AEDS1
 0870863_Gabriel_Matos_Nogueira
 */
 
-/*
+/* 
 // ----------------------
 DEPENDENCIAS / BIBLIOTECAS
 // ----------------------
@@ -11,7 +11,7 @@ DEPENDENCIAS / BIBLIOTECAS
 #include "io.hpp"
 // ----------------------
 
-#define MAX 10
+#define MAX 100
 
 /*
 Metodo 01 - Ordenacao de arranjo de forma decrescente
@@ -24,64 +24,63 @@ e ordenar de forma decrescente o conteudo deste.
 */
 void metodo01(void)
 {
-    int i = 0;
-    int temp = 0;
-    bool verificador=false;
-    double array[MAX];
-    ofstream arquivo_escrita("metodo01.txt");
+    int array[MAX];
+    bool verificacation = false;
+    ofstream arquivoEscrita("metodo01.txt");
     srand(static_cast<unsigned int>(time(0)));
 
-    if (!(arquivo_escrita.is_open()))
+    if (arquivoEscrita)
     {
-        IO_println("Erro ao abrir o arquivo");
+        cout << "Gerando valores aleatorios e salvando no arquivo..." << endl;
+        for (int i = 0; i < MAX; i++)
+        {
+            int valor = rand() % 101;
+            arquivoEscrita << valor << endl;
+        }
+        arquivoEscrita.close();
+        verificacation = true;
     }
     else
     {
-        IO_println("Gerando valores aleatorios dentro do arquivo...");
+        cout << "Erro ao abrir o arquivo para escrita." << endl;
+    }
 
-        for (i = 0; i < MAX; i = i + 1)
-        {
-            arquivo_escrita << rand()%101 << endl;
-        }
+    if (verificacation)
+    {
+        ifstream arquivoLeitura("metodo01.txt");
 
-        arquivo_escrita.close();
-        ifstream arquivo_leitura("metodo01.txt");
+        if (arquivoLeitura)
+        {
+            for (int i = 0; i < MAX && arquivoLeitura >> array[i]; i++);
 
-        if (!arquivo_leitura.is_open())
-        {
-            cout << "Erro ao abrir o arquivo para leitura.\n";
-        }
-        else
-        {
-            for (i = 0; i < MAX; i = i + 1)
+            arquivoLeitura.close();
+
+            // Ordenação manual (bubble sort em ordem decrescente)
+            for (int i = 0; i < MAX - 1; i++)
             {
-                arquivo_leitura >> array[i];
-            }
-
-            
-            for(i=0; i<MAX-1; i=i+1)
-            {
-                if (array[i] < array[i + 1])
+                for (int j = 0; j < MAX - 1 - i; j++)
                 {
-                    temp = array[i];
-                    array[i] = array[i+1];
-                    array[i+1] = temp;
+                    if (array[j] < array[j + 1])
+                    {
+                        int temp = array[j];
+                        array[j] = array[j + 1];
+                        array[j + 1] = temp;
+                    }
                 }
             }
 
-            for (i = 0; i < MAX; i = i + 1)
+            cout << "Valores ordenados de forma decrescente:" << endl;
+            for (int i = 0; i < MAX; i++)
             {
-                printf("\n%.0lf", array[i]);
-                i = i + 1;
+                cout << array[i] << " ";
             }
-
-            arquivo_leitura.close();
+            cout << endl;
+        }
+        else
+        {
+            cout << "Erro ao abrir o arquivo para leitura." << endl;
         }
     }
-
-    cout << endl;
-    IO_println("Aperte ENTER para encerrar o programa.");
-    getchar();
 }
 
 int main(void)
@@ -96,54 +95,54 @@ int main(void)
         {
         case 0:
             break;
-        case 1:
-            metodo01();
-            break;
-            /*
-                                case 2:
-                                    metodo02();
-                                    break;
+            		case 1:
+                        metodo01();
+                        break;
+/*
+                    case 2:
+                        metodo02();
+                        break;
 
-                                case 3:
-                                    metodo03();
-                                    break;
+                    case 3:
+                        metodo03();
+                        break;
 
-                                case 4:
-                                    metodo04();
-                                    break;
+                    case 4:
+                        metodo04();
+                        break;
 
-                                case 5:
-                                    metodo05();
-                                    break;
+                    case 5:
+                        metodo05();
+                        break;
 
-                                case 6:
-                                    metodo06();
-                                    break;
+                    case 6:
+                        metodo06();
+                        break;
 
-                                case 7:
-                                    metodo07();
-                                    break;
+                    case 7:
+                        metodo07();
+                        break;
 
-                                case 8:
-                                    metodo08();
-                                    break;
+                    case 8:
+                        metodo08();
+                        break;
 
-                                case 9:
-                                    metodo09();
-                                    break;
+                    case 9:
+                        metodo09();
+                        break;
 
-                                case 10:
-                                    metodo10();
-                                    break;
+                    case 10:
+                        metodo10();
+                        break;
 
-                                case 11:
-                                    metodo_013E1();
-                                    break;
+                    case 11:
+                        metodo_013E1();
+                        break;
 
-                                case 12:
-                                    metodo_013E2();
-                                    break;
-                        */
+                    case 12:
+                        metodo_013E2();
+                        break;
+            */
         }
 
     } while (opcao != 0);
