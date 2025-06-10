@@ -1,68 +1,143 @@
+/*
+AEDS1
+0870863_Gabriel_Matos_Nogueira
+*/
 
+/* 
+// ----------------------
+DEPENDENCIAS / BIBLIOTECAS
+// ----------------------
+*/
+#include "io.hpp"
+// ----------------------
+
+#define MAX 100
+
+/*
+Metodo 01 - Ordenacao de arranjo de forma decrescente
+
+Leitura de no maximo 100 valores dentro de um arquivo para armazena-los em um arranjo
+e ordenar de forma decrescente o conteudo deste.
+
+@param void
+@return void
+*/
 void metodo01(void)
 {
+    int i=0;
+    int temp=0;
     int array[MAX];
-    int quantidade = 0;              // Quantidade real de valores lidos
-    bool verificacation = false;     // Controle de sucesso na escrita
-
-    ofstream arquivoEscrita("metodo01.txt");
+    bool swaped=false;
+    ofstream arquivo_escrita ("metodo01.txt");
+    ifstream arquivo_leitura ("metodo01.txt");
     srand(static_cast<unsigned int>(time(0)));
 
-    if (arquivoEscrita)
+    if(!(arquivo_escrita))
     {
-        cout << "Gerando valores aleatorios e salvando no arquivo..." << endl;
-        for (int i = 0; i < MAX; i++)
-        {
-            int valor = rand() % 101;
-            arquivoEscrita << valor << endl;
-        }
-        arquivoEscrita.close();
-        verificacation = true;
+        IO_println("Erro ao abrir o arquivo");
     }
     else
     {
-        cout << "Erro ao abrir o arquivo para escrita." << endl;
+        IO_println("Gerando valores aleatorios dentro do arquivo...");
+        for(i=0; i<MAX; i=i+1)
+        {
+            arquivo_escrita << rand()%101 << endl;
+        }
+        arquivo_escrita.close();        
     }
 
-    if (verificacation)
+    if((arquivo_leitura.is_open()))
     {
-        ifstream arquivoLeitura("metodo01.txt");
-
-        if (arquivoLeitura)
+        while (swaped)
         {
-            // Leitura dos dados e contagem real
-            while (quantidade < MAX && arquivoLeitura >> array[quantidade])
+            swaped=false;
+            for(i=0; i<MAX-1; i=i+1)
             {
-                quantidade++;
-            }
-
-            arquivoLeitura.close();
-
-            // Ordenação manual (bubble sort em ordem decrescente)
-            for (int i = 0; i < quantidade - 1; i++)
-            {
-                for (int j = 0; j < quantidade - 1 - i; j++)
+                if(array[i]<array[i])
                 {
-                    if (array[j] < array[j + 1])
-                    {
-                        int temp = array[j];
-                        array[j] = array[j + 1];
-                        array[j + 1] = temp;
-                    }
+                    temp=array[i];
+                    array[i]=array[i+1];
+                    array[i+1]=temp;
+                    swaped=true;
                 }
             }
-
-            // Exibição dos valores ordenados
-            cout << "Valores ordenados de forma decrescente:" << endl;
-            for (int i = 0; i < quantidade; i++)
-            {
-                cout << array[i] << " ";
-            }
-            cout << endl;
         }
-        else
+        arquivo_leitura.close();
+
+        for(i=0; i<MAX; i=i+1)
         {
-            cout << "Erro ao abrir o arquivo para leitura." << endl;
+            IO_printf("%.0lf", array[i]);
         }
     }
+    else
+    {
+        IO_println("Erro ao abrir o arquivo para a leitura");
+    }
+}
+
+int main(void)
+{
+    int opcao = 0;
+    do
+    {
+        Recuperation_Methods();
+        opcao = IO_readint("\nDigite a opcao desejada: ");
+
+        switch (opcao)
+        {
+        case 0:
+            break;
+            		case 1:
+                        metodo01();
+                        break;
+/*
+                    case 2:
+                        metodo02();
+                        break;
+
+                    case 3:
+                        metodo03();
+                        break;
+
+                    case 4:
+                        metodo04();
+                        break;
+
+                    case 5:
+                        metodo05();
+                        break;
+
+                    case 6:
+                        metodo06();
+                        break;
+
+                    case 7:
+                        metodo07();
+                        break;
+
+                    case 8:
+                        metodo08();
+                        break;
+
+                    case 9:
+                        metodo09();
+                        break;
+
+                    case 10:
+                        metodo10();
+                        break;
+
+                    case 11:
+                        metodo_013E1();
+                        break;
+
+                    case 12:
+                        metodo_013E2();
+                        break;
+            */
+        }
+
+    } while (opcao != 0);
+
+    return 0;
 }
