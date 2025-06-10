@@ -24,35 +24,78 @@ e ordenar de forma decrescente o conteudo deste.
 */
 void metodo01(void)
 {
-    int i=0;
+    int i = 0;
+    int temp = 0;
     int array[MAX];
-    ofstream arquivo ("metodo01.txt");
+    bool swaped = false;
+    ofstream arquivo_escrita("metodo01.txt");
+    ofstream arquivo_escrita02("metodo01_CRESCENTE.txt");
+    ifstream arquivo_leitura("metodo01.txt");
     srand(static_cast<unsigned int>(time(0)));
 
-    if(!(arquivo))
+    if (!(arquivo_escrita))
     {
         IO_println("Erro ao abrir o arquivo");
     }
     else
     {
         IO_println("Gerando valores aleatorios dentro do arquivo...");
-
-        for(i=0; i<MAX; i=i+1)
+        for (i = 0; i < MAX; i = i + 1)
         {
-            arquivo << rand() << endl;
+            arquivo_escrita << rand() % 101 << endl;
         }
-
-        for(i=0; i<MAX; i=i+1)
-        {
-            arquivo >> array[i];
-        }
-
-        arquivo.close();        
+        arquivo_escrita.close();
     }
 
+    if ((arquivo_leitura.is_open()))
+    {
+        for (i = 0; i < MAX; i = i + 1)
+        {
+            arquivo_leitura >> array[i];
+        }
 
+        swaped = true;
+
+        while (swaped)
+        {
+            swaped = false;
+            for (i = 0; i < MAX - 1; i = i + 1)
+            {
+                if (array[i] < array[i + 1])
+                {
+                    temp = array[i];
+                    array[i] = array[i + 1];
+                    array[i + 1] = temp;
+                    swaped = true;
+                }
+            }
+        }
+        arquivo_leitura.close();
+
+        for (i = 0; i < MAX; i = i + 1)
+        {
+            IO_printf("%.0lf\n", (double)array[i]); // Ajustado cast p/ double
+        }
+
+        for (i = 0; i<MAX; i = i + 1)
+        {
+            arquivo_escrita02 << array[i] << endl;
+        }
+        arquivo_escrita02.close();
+    }
+    else
+    {
+        IO_println("Erro ao abrir o arquivo para a leitura");
+    }
+
+    IO_println("Aperte ENTER para encerrar o metodo.");
+    getchar();
 }
 
+void metodo02(void)
+{
+    
+}
 int main(void)
 {
     int opcao = 0;
@@ -60,6 +103,7 @@ int main(void)
     {
         Recuperation_Methods();
         opcao = IO_readint("\nDigite a opcao desejada: ");
+        getchar();
 
         switch (opcao)
         {
@@ -68,11 +112,11 @@ int main(void)
             		case 1:
                         metodo01();
                         break;
-/*
+
                     case 2:
                         metodo02();
                         break;
-
+/*
                     case 3:
                         metodo03();
                         break;
