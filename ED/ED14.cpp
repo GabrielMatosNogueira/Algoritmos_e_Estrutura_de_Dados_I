@@ -19,7 +19,21 @@ Metodo para
 */
 void metodo01(void)
 {
+    ED14 ED14_metodo01;
+    int numero_inteiro=0;
+    int valor_lido=0;
 
+    cout << endl;
+    numero_inteiro=IO_readint("Digite um numero inteiro para o objeto: ");
+    getchar();
+    ED14_metodo01.setInt(numero_inteiro);
+
+    valor_lido=ED14_metodo01.getInt();
+    IO_printf("Valor lido com a funcao get: %d", valor_lido);
+    cout << endl;
+
+    IO_println("Aperte ENTER para encerrar o programa.");
+    getchar();
 }
 
 /*
@@ -239,3 +253,49 @@ int main(void)
 
     return 0;
 }
+
+/*
+void metodo01(void)
+{
+    int opcao=0;
+    int numero_inteiro=0;
+    double numero_real=0.0;
+    ED14 ED14_metodo01;
+
+    IO_println("Escolha se deseja obter o sinal de um numero INTEIRO ou REAL:");
+    IO_println("0 - Encerrar");
+    IO_println("1 - Inteiro");
+    IO_println("2 - Real");
+    opcao=IO_readint("");
+
+    do
+    {
+        if(opcao==1)
+        {
+            cout << endl;
+            numero_inteiro=IO_readint("Digite o valor do numero inteiro: ");
+            if(numero_inteiro<0)
+            {
+                IO_print
+            }
+            if(numero_inteiro>0)
+            {
+
+            }
+            else
+            {
+                IO_print("Numero e' nulo.");
+            }
+        }
+        if(opcao==2)
+        {
+
+        }
+        else
+        {
+            IO_print("Opcao invalida. Tente novamente");
+        }
+    }while(opcao!=0);
+
+}
+*/
