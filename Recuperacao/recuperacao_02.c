@@ -7,14 +7,20 @@ AEDS 1
  * ----------------------------------------
  * BIBLIOTECAS / DEPENDÊNCIAS
  * ----------------------------------------
- * <stdio.h>    - Funções de entrada e saída (printf, fprintf, fopen, etc.)
- * <stdlib.h>   - Funções utilitárias (rand, srand, malloc, free, etc.)
- * <time.h>     - Manipulação de tempo (time, para semente de aleatoriedade)
- * "io.h"       - Biblioteca personalizada com funções auxiliares (IO_println, IO_readint, etc.)
+ * "io.h"    - Biblioteca com importacao de outras bibliotecas
  */
 
 #include "io.h"
 
+
+/**
+ * @brief Primeira funcao do programa.
+ *
+ * 
+ * 
+ *
+ * @return int Código de término do programa (0 para sucesso).
+ */
 void metodo01(void)
 {
 
