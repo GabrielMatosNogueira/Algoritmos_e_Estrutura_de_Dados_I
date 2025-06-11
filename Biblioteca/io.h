@@ -1,28 +1,25 @@
 /**
    IO - Console input/output library.
    @author  PUC-Minas - ICEI
-   @version 0.1 - 2023-1
-
+   @version 0.1 - 2023-1b
+   
    IO - v2023-1_0.1 - __ / __ / _____
    Author: __________________________
 
-*/
+ */
 // ---------------------- lista de dependencias
 
-#include <iostream>    // para entradas e saidas
-#include <fstream>     // para arquivos
-#include <sstream>     // para conversoes
-#include <string>      // para cadeias de caracteres
-
-#include <cstdio>      // para entradas e saida
-#include <cstdlib>     // para a biblioteca padrao
-#include <cstring>     // para cadeias de caracteres
-
+#include <stdio.h>     // para entradas e saidas
 #include <stddef.h>    // para definicoes basicas
+#include <stdlib.h>    // para a biblioteca padrao
+#include <string.h>    // para cadeias de caracteres
 #include <stdarg.h>    // para tratar argumentos
+#include <stdbool.h>   // para definicoes logicas
 #include <ctype.h>     // para tipos padroes
 #include <math.h>      // para definicoes matematicas
 #include <time.h>      // para medir tempo
+#include <wchar.h>     // para 16-bit characters
+#include <iso646.h>    // para and, or, xor, not alternatives
 
 // ---------------------- redefinicoes para apontamentos
 
@@ -45,18 +42,13 @@
 
 // ---------------------- redefinicoes uteis
 
-#ifndef _IO_HPP_
-#define _IO_HPP_
-
-#define  IO_printf        printf   // melhor printf_s
-#define  IO_scanf         scanf    // melhor scanf_s
-#define  IO_fprintf       fprintf  // melhor fprintf_s
-#define  IO_fscanf        fscanf   // melhr  scanf_s
-
-#define  AND              &&
-#define  OR               ||
-#define  NOT              !
-#define  XOR              ^
+#ifndef _IO_H_
+#define _IO_H_
+                          // alternativas mais seguras, se disponiveis
+#define  IO_printf        printf    // melhor: printf_s
+#define  IO_scanf         scanf     // melhor: scanf_s
+#define  IO_fprintf       fprintf   // melhor: fprintf_s
+#define  IO_fscanf        fscanf    // melhor: fscanf_s
 
 // ---------------------- definicoes de constantes
 
@@ -66,6 +58,7 @@ const   bool TRUE         = true ;  // definir constante
 const   char EOS          = '\0';   // definir fim de cadeia de caracteres
 const   char EOL          = '\n';   // definir mudanca de linha
 const   char ENDL []      = "\n";   // definir mudanca de linha
+
 const   char STR_EMPTY [] =  "" ;   // definir cadeia de caracteres vazia
 const   int  STR_SIZE     =  80 ;   // definir tamanho padrao para caracteres
 
@@ -85,71 +78,6 @@ bool IO_trace   = true;             // inicialmente habilitado
 
 // ---------------------- para tratamento de erros
 
-using namespace std;
-
-void Recuperation_Methods (void)
-{
-    int i=1;
-    printf("\nMenu de opcoes:");
-    printf("\n0 - Encerrar");
-    do
-    {
-        printf("\n%d - Exercicio %1.d", i, i);
-        i=i+1;
-    }while(i<11);
-}
-
-void IO_methods (int ED)
-{
-	int i = 0;
-	int exercicio=ED;
-    	if (ED < 10)
-	{
-        	ED = (ED * 100)+10;
-		cout << endl << "Menu de opcoes:";
-        	for (i = 0; i < 11; i = i + 1)
-        	{
-
-            	if (i == 0)
-            	{
-                	printf("\n0 - Encerrar");
-			ED=ED+1;
-            	}
-
-	            else
-	            {
-	                printf("\n%d - 0%d", i, ED);
-	                ED = ED + 1;
-	            }
-	        }
-		printf("\n12 - 0%dE1", exercicio);
-		printf("\n13 - 0%dE2", exercicio);
-	}
-    
-	else
-	{
-		ED=(ED*100)+10;
-        	cout << endl << "Menu de opcoes:";
-        	for (i = 0; i < 11; i = i + 1)
-        	{
-
-            		if (i == 0)
-            		{
-	                	printf("\n0 - Encerrar");
-				ED = ED + 1;
-			}
-
-			else
-			{
-				printf("\n%d - %d", i, ED);		
-				ED = ED + 1;
-			}
-		}
-		printf("\n12 - %dE1", exercicio);
-		printf("\n13 - %dE2", exercicio);
-	}
-}
-
 void IO_debugOFF ( )
 {
   IO_trace = false;
@@ -160,11 +88,11 @@ void IO_debugON  ( )
   IO_trace = true;
 } // end IO_debug_ON  ( )
 
-void IO_debug ( bool condition, const char *text )
+void IO_debug ( bool condition, const char * const text )
 {
   if ( IO_trace && condition )
   {
-     printf ( "\nDBG> %s\n", text );
+     IO_printf ( "\nDBG> %s\n", text );
      getchar( );
   } // end if
 } // end IO_debug ( )
@@ -174,8 +102,10 @@ void IO_debug ( bool condition, const char *text )
 /**
     Metodo para limpar a saida de dados padrao.
  */
-void IO_clrscr ( void )
+void IO_clrscr ( )
 {
+  if ( IO_trace )
+  {
 #if defined(_WIN32) || defined(_WIN64) || defined(__WINDOWS__)
     system ( "cls"   ); // para Windows - OBS: NAO RECOMENDADO !
 #elif defined(__linux__)
@@ -187,28 +117,28 @@ void IO_clrscr ( void )
 #else
     #error Unknown_OS
 #endif
+  } // end if
 } // end IO_flush ( )
 
 /**
     Metodo para limpar a entrada de dados padrao.
  */
-void IO_flush ( void )
+void IO_flush ( )
 {
- // fflush ( stdin );   // Para Windows - OBS: NAO RECOMENDADO !
-                        // Para Linux   - OBS: NAO FUNCIONA    !
-    char x = '0';
-    do { x = getchar( ); } while ( '\n' != x );
- // std::cin.clear ( );
- // std::cin.ignore(80, '\n');
+//  fflush ( stdin );   // para Windows - OBS: NAO RECOMENDADO !
+                        // para Linux   - OBS: NAO FUNCIONA    !
+    int  x = 0;         // compat�vel com o retorno de getchar()
+    do { x = getchar( ); } while ( x != EOF && x != '\n' );
+    clearerr ( stdin ); // reiniciar o estado de EOF
 } // end IO_flush ( )
 
 /**
     Funcao para informar a versao dessa biblioteca.
     @return versao atual
  */
-std::string IO_version ( void )
+chars IO_version ( )
 {
-    std::string x = "v.2022-2";
+    chars x = strdup ( "v.2023-1b" );
     return ( x );
 } // end IO_version ( )
 
@@ -216,58 +146,40 @@ std::string IO_version ( void )
     Metodo para identificar o programa e a autoria.
     @param text - mensagem a ser exibida
  */
-void IO_id ( std::string text )
+void IO_id ( const char * const text )
 {
-    std::cout << text << std::endl;
-    std::cout << "Autor: ________________________";
-    std::cout << std::endl;          // mudar de linha
+    IO_printf ( "%s\n", text );
+    IO_printf ( "%s\n", "Autor: ________________________" );
+    IO_printf ( "\n" );          // mudar de linha
 } // fim IO_id ( )
 
 /**
-    Funcao para ler valor logico do teclado.
+    Funcao para ler valor inteiro do teclado.
     @return valor lido
     @param  text - mensagem a ser exibida antes da leitura
-    OBS.:   Usar o valor zero para falso, e diferente de zero para verdadeiro
  */
-bool IO_readbool ( std::string text )
+int IO_readint ( const char * const text )
 {
     int x = 0;
-    std::cout << text;
-    std::cin  >> std::skipws >> x;
-    std::cin.clear ( );
-    return    ( x!=0 );
-} // end IO_readbool ( )
-
-/**
-    Funcao para ler caractere do teclado.
-    @return valor lido
-    @param  text - mensagem a ser exibida antes da leitura
- */
-char IO_readchar ( std::string text )
-{
-    char x = '0';
-    std::cout << text;
-    do
-    {
-//      IO_flush    ( );
-      std::cin.get ( x );
-      std::cin.clear ( );
-    }
-    while ( x == '\n' );
-    return ( x );
-} // end IO_readchar ( )
+    if ( IO_trace )
+       IO_printf ( "%s", text   );
+    IO_scanf  ( "%d", &x );
+    IO_flush  ( );
+    return    ( x );
+} // end IO_readint ( )
 
 /**
     Funcao para ler valor real de precisao dupla do teclado.
     @return valor lido
     @param  text - mensagem a ser exibida antes da leitura
  */
-double IO_readdouble ( std::string text )
+double IO_readdouble ( const char * const text )
 {
     double x = 0.0;
-    std::cout << text;
-    std::cin >> std::skipws >> x;
-    std::cin.clear ( );
+    if ( IO_trace )
+       IO_printf ( "%s", text   );
+    IO_scanf  ( "%lf", &x );
+    IO_flush  ( );
     return    ( x );
 } // end IO_readdouble ( )
 
@@ -276,55 +188,61 @@ double IO_readdouble ( std::string text )
     @return valor lido
     @param  text - mensagem a ser exibida antes da leitura
  */
-float IO_readfloat ( std::string text )
+float IO_readfloat ( const char * const text )
 {
     float x = 0.0;
-    std::cout << text;
-    std::cin >> std::skipws >> x;
-    std::cin.clear ( );
+    if ( IO_trace )
+       IO_printf ( "%s", text   );
+    IO_scanf  ( "%f", &x );
+    IO_flush  ( );
     return    ( x );
 } // end IO_readfloat ( )
 
 /**
-    Funcao para ler valor inteiro do teclado.
+    Funcao para ler valor logico do teclado.
     @return valor lido
     @param  text - mensagem a ser exibida antes da leitura
+    OBS.:   Usar zero (0) para falso e
+            diferente de zero para verdadeiro
  */
-int IO_readint ( std::string text )
+bool IO_readbool ( const char * const text )
 {
     int x = 0;
-    std::cout << text;
-    std::cin >> std::skipws >> x;
-    std::cin.clear ( );
-    return    ( x );
-} // end IO_readint ( )
-
-/**
-    Funcao para ler caractere do teclado.
-    @return valor lido
- */
-void IO_pause ( void )
-{
-    char x = '0';
-    do
-    {
-//      IO_flush    ( );
-//      x = getchar ( );
-      x = std::cin.get( );
-      std::cin.clear( );
-    }
-    while ( x != '\n' );
-} // end IO_pause ( )
+    if ( IO_trace )
+       IO_printf ( "%s", text   );
+    IO_scanf  ( "%d", &x );
+    IO_flush  ( );
+    return    ( x!=0 );
+} // end IO_readbool ( )
 
 /**
     Funcao para ler caractere do teclado.
     @return valor lido
     @param  text - mensagem a ser exibida antes da leitura
  */
-void IO_pause ( std::string text )
+char IO_readchar ( const char * const text )
 {
-    std::cout << std::endl << text << std::endl;
-    IO_pause ( );
+    char x = '0';
+    if ( IO_trace )
+       IO_printf ( "%s", text   );
+    do { x = getchar( ); } while ( '\n' == x ); IO_flush  ( );
+//  getchar ( );
+    return ( x );
+} // end IO_readchar ( )
+
+/**
+    Funcao para ler caractere do teclado.
+    @return valor lido
+    @param  text - mensagem a ser exibida antes da leitura
+ */
+void IO_pause ( const char * const text )
+{
+    char x = '0';
+    if ( IO_trace )
+    {
+       IO_printf ( "\n%s\n", text );
+       do { x = getchar( ); } while ( '\n' != x );
+    } // end if
 } // end IO_pause ( )
 
 /**
@@ -373,10 +291,12 @@ bools IO_new_bools ( int size )
     @param text1 - primeira cadeia
     @param text2 - segunda  cadeia
  */
-std::string IO_concat ( std::string text1, std::string text2 )
+chars IO_concat ( const char * const text1, const char * const text2 )
 {                               // reservar area
-  std::string buffer = text1+text2;
-  return ( buffer );
+    chars buffer = IO_new_chars ( strlen(text1)+strlen(text2)+1 );
+    strcpy ( buffer, text1 );
+    strcat ( buffer, text2 );
+    return ( buffer );
 } // fim IO_concat ( )
 
 /**
@@ -384,112 +304,102 @@ std::string IO_concat ( std::string text1, std::string text2 )
     @return cadeia com o resultado
     @param x     - valor logico
  */
-std::string IO_toString ( bool x )
-{
-  std::ostringstream buffer;
-  buffer << x;
-  return  ( buffer.str ( ) );
-} // fim IO_toString ( )
+chars IO_toString_b ( bool x )
+{                               // reservar area
+    chars buffer = IO_new_chars ( STR_SIZE+1 );
+    sprintf ( buffer, "%d", x );// variante do printf( )
+    return  ( buffer );
+} // fim IO_toString_b ( )
 
 /**
     Funcao para converter caractere para caracteres.
     @return cadeia com o resultado
     @param x     - caractere
  */
-std::string IO_toString ( char x )
-{                             // variante do printf( )
-  std::ostringstream buffer;
-  buffer << x;
-  return  ( buffer.str ( ) );
-} // fim IO_toString ( )
+chars IO_toString_c ( char x )
+{
+    chars buffer = IO_new_chars ( STR_SIZE+1 );
+    sprintf ( buffer, "%c", x );// variante do printf( )
+    return  ( buffer );
+} // fim IO_toString_c ( )
 
 /**
     Funcao para converter inteiro para caracteres.
     @return cadeia com o resultado
     @param x     - valor inteiro
  */
-std::string IO_toString ( int x )
-{         
-  std::ostringstream buffer;
-  buffer << x;
-  return  ( buffer.str ( ) );
-} // fim IO_toString ( )
+chars IO_toString_d ( int x )
+{
+    chars buffer = IO_new_chars ( STR_SIZE+1 );
+    sprintf ( buffer, "%d", x );// variante do printf( )
+    return  ( buffer );
+} // fim IO_toString_d ( )
 
 /**
-    Funcao para converter real para caracteres.
+    Funcaoo para converter real para caracteres.
     @return cadeia com o resultado
     @param x     - valor real
  */
-std::string IO_toString ( double x )
-{
-  std::ostringstream buffer;
-  buffer << x;
-  return  ( buffer.str ( ) );
-} // fim IO_toString ( )
-
-/**
-    Funcao para converter real para caracteres.
-    @return cadeia com o resultado
-    @param x     - valor real
- */
-std::string IO_toString ( std::string x )
-{
-  std::ostringstream buffer;
-  buffer << x;
-  return  ( buffer.str ( ) );
-} // fim IO_toString ( )
+chars IO_toString_f ( double x )
+{                               // variante do printf( )
+    chars buffer = IO_new_chars ( STR_SIZE+1 );
+    sprintf ( buffer, "%lf", x );
+    return  ( buffer );
+} // fim IO_toString_f ( )
 
 /**
     Metodo para mostrar uma linha com certo texto.
-    @param text1 - primeira cadeia
+    @param text - texto a ser exibido
  */
-void IO_print ( std::string text1 )
+void IO_print ( const char * const text )
 {
-  std::cout << text1;
+    IO_printf ( "%s", text );
+//      puts ( text );
 } // fim IO_print ( )
 
 /**
     Metodo para mostrar uma linha com certo texto
     e mudar de linha.
-    @param text1 - primeira cadeia
+    @param text - texto a ser exibido
  */
-void IO_println ( std::string text1 )
+void IO_println ( const char * const text )
 {
-  std::cout << text1 << std::endl;
+    IO_printf ( "%s\n", text );
+//  puts ( text ); putchar ( '\n' );
 } // fim IO_println ( )
 
 /**
     Metodo para gravar uma linha em arquivo texto.
     @param filePtr - referencia para arquivo aberto
-    @param text1 - cadeia de caracteres a ser gravada
+    @param text    - cadeia de caracteres a ser gravada
  */
-void IO_fprint ( FILE* filePtr, std::string text1 )
+void IO_fprint ( FILE* filePtr, const char * const text )
 {
-  fprintf ( filePtr, "%s", text1.c_str( ) );
+    IO_fprintf ( filePtr, "%s", text );
 } // fim IO_fprint ( )
 
 /**
     Metodo para gravar uma linha em arquivo texto
     e mudar de linha.
     @param filePtr - referencia para arquivo aberto
-    @param text1 - cadeia de caracteres a ser gravada
+    @param text    - cadeia de caracteres a ser gravada
  */
-void IO_fprintln ( FILE* filePtr, std::string text1 )
+void IO_fprintln ( FILE* filePtr, const char * const text )
 {
-  fprintf ( filePtr, "%s\n", text1.c_str( ) );
+    IO_fprintf ( filePtr, "%s\n", text );
 } // fim IO_fprintln ( )
 
 /**
-    Funcao para ler uma palavra de arquivo.
+    Funcao para ler uma cadeia de caracteres de arquivo.
     @return palavra lida
     @param arquivo - referencia para arquivo aberto
  */
 chars IO_fread ( FILE* filePtr )
 {
-  chars buffer = IO_new_chars ( STR_SIZE+1 );
+    chars buffer = IO_new_chars ( STR_SIZE+1 );
 
-  fscanf ( filePtr, "%s", buffer ); // ler uma linha
-  return ( buffer );
+    IO_fscanf ( filePtr, "%s", buffer ); // ler uma cadeia
+    return ( buffer );
 } // fim IO_fread ( )
 
 /**
@@ -497,49 +407,41 @@ chars IO_fread ( FILE* filePtr )
     @return linha lida
     @param filePtr - referencia para arquivo aberto
  */
-std::string IO_freadln ( std::ifstream& filePtr )
+chars IO_freadln ( FILE* filePtr )
 {
-  std::string buffer;
+    chars buffer = IO_new_chars ( STR_SIZE+1 );
 
-  std::getline ( filePtr, buffer);    // ler uma linha
-  return ( buffer );
+    fgets  ( buffer, STR_SIZE, filePtr ); // ler uma linha
+    buffer [ strlen (buffer)-1 ] = EOS;   // reposicionar o fim de linha
+    return ( buffer );
 } // fim IO_freadln ( )
-/**/
 
 /**
     Funcao para ler cadeia de caracteres.
     @return cadeia de caracteres
-    @param  text - mensagem a ser exibida antes da leitura
+    @param text - mensagem a ser exibida antes da leitura
  */
-char* IO_readstring ( std::string text )
+chars IO_readstring ( const char * const text )
 {
-  std::string buffer;
-  char* tmp = (char*) calloc ( 80+1, sizeof(char) );
-
-  std::cout << text  ;
-  std::cin  >> buffer;                // ler cadeia de caracteres
-  IO_flush  ( )      ;                // limpar a entrada de dados
-
-//  return ( (char*) (buffer.c_str( )) );
-  strcpy ( tmp, buffer.c_str( ) );
-  return ( &(tmp[0]) );
+    chars buffer = IO_new_chars ( STR_SIZE+1 );
+    if ( IO_trace )
+       IO_printf ( "%s", text   );
+    IO_scanf  ( "%80s", buffer );  // ler cadeia de caracteres
+                                   // com limitacao de 80 posicoes
+    IO_flush  ( );
+    return ( buffer );
 } // fim IO_readString ( )
 
 /**
     Funcao para ler uma linha inteira.
     @return linha lida
-    @param  text - mensagem a ser exibida antes da leitura
+    @param text - mensagem a ser exibida antes da leitura
  */
-char* IO_readln ( std::string text )
+chars IO_readln ( const char * const text )
 {
-  std::string buffer;
-  char* tmp = (char*) calloc ( 80+1, sizeof(char) );
-
-  std::cout << text ;
-  std::getline ( std::cin, buffer, '\n' );
-
-  strcpy ( tmp, buffer.c_str( ) );
-  return ( &(tmp[0]) );
+    if ( IO_trace )
+       IO_printf ( "%s", text   );
+    return ( IO_freadln ( stdin ) );
 } // fim IO_readln ( )
 
 /**
@@ -549,57 +451,23 @@ char* IO_readln ( std::string text )
  */
 chars IO_boolalpha ( bool value )
 {
-  static char tmp [80];
-
-  std::ostringstream buffer;
-  buffer << std::boolalpha << value;
-  strcpy ( tmp, (buffer.str( )).c_str( ) );
-  return ( &(tmp[0]) );
+    if ( value )
+       return ( strdup ("true"  ) );
+    else
+       return ( strdup ("false" ) );
 } // fim IO_boolalpha ( )
 
 /**
-    Funcao para converter valor logico para cadeia de caracteres.
-    @return "true", se verdadeiro; "false", caso contrario
-    @param  value - valor a ser convertido
+    Funcao para comparar conteudos em memoria.
+    @return true, se iguais; false, caso contrario
+    @param  p1   - endereco do primeiro valor
+    @param  p2   - endereco do segundo  valor
+    @param  size - tamanho em bytes a ser comparado
  */
-bool IO_check ( void *p1, void *p2, int size )
+bool IO_check ( void *p1, void *p2, unsigned int size )
 {
-  return ( p1 && p2 && (0==memcmp( p1, p2, size )) );
+    return ( p1 && p2 && (0==memcmp( p1, p2, size )) );
 } // fim IO_check ( )
-
-/**
-    Funcao para ler um cadeia de caracteres.
-    @return cadeia de caracteres lida
-    @param  text - mensagem a ser exibida antes da leitura
- */
-std::string IO_next ( std::string text )
-{
-  std::string buffer;
-
-  std::cout << text  ;
-  IO_flush  ( );                        // limpar a entrada de dados
-  std::cin  >> buffer;
-
-  return ( buffer );
-} // fim IO_next ( )
-
-/**
-    Funcao para ler uma linha inteira.
-    @return linha lida
-    @param  text - mensagem a ser exibida antes da leitura
- */
-std::string IO_nextLine ( std::string text )
-{
-  std::string buffer;
-
-  std::cout << text ;
-  //IO_flush  ( );                      // limpar a entrada de dados
-  do
-  { std::getline  ( std::cin, buffer, '\n' ); }
-  while ( buffer.length( )==0 );  
-  return ( buffer );
-} // fim IO_nextLine ( )
-
 
 /**
     Funcao para retornar o tamanho de cadeia de caracteres.
@@ -624,7 +492,7 @@ int IO_length ( char* text )
 char IO_charAt ( char* text, unsigned int index )
 {
     char x = '\0';
-    if ( text && 0 <= index && index < strlen(text) )
+    if ( text && index < strlen(text) )
     {  x = text [ index ]; }
     return ( x );
 } // fim IO_charAt ( )
@@ -637,10 +505,10 @@ char IO_charAt ( char* text, unsigned int index )
     @param  start - onde comecar
     @param  size  - quantos caracteres copiar
  */
-char* IO_substring ( char *text, int start, int size )
+char* IO_substring ( char *text, int start, unsigned int size )
 {
-    chars  buffer = NULL;
-    if ( start >= 0 && size > 0 && (start+size) < (int) strlen(text) )
+    chars buffer = NULL;
+    if ( start >= 0 && (start+size) < (int) strlen(text) )
     {
        buffer = IO_new_chars ( size+1 );
        memcpy ( buffer, text+start, size );
@@ -648,5 +516,86 @@ char* IO_substring ( char *text, int start, int size )
     }
     return ( buffer );
 } // fim IO_substring ( )
+
+/**
+    Funcao para copiar parte de uma cadeia de caracteres.
+    @return parte de cadeia de caracteres ou
+            NULL, caso houver parametros invalidos
+    @param  text   - cadeia de caracteres
+    @param  symbol - caractere a ser acrescentado
+ */
+char* IO_strapp ( char *text, char symbol )
+{
+    chars buffer = NULL;
+    int size     = 0   ;
+    if ( text )
+    {
+       size   = strlen ( text );
+       buffer = IO_new_chars ( size+1 );
+       memcpy ( buffer, text, size );
+       buffer [size  ] = symbol;
+       buffer [size+1] = '\0'  ;
+    }
+    return ( buffer );
+} // fim IO_strapp ( )
+
+void IO_Recuperation_Methods (void)
+{
+    int i=1;
+    printf("\nMenu de opcoes:");
+    printf("\n0 - Encerrar");
+    do
+    {
+        printf("\n%d - Exercicio %1.d", i, i);
+        i=i+1;
+    }while(i<11);
+}
+
+void IO_methods(int ED)
+{
+    int i = 0;
+    int exercicio = ED;
+
+    if (ED < 10)
+    {
+        ED = (ED * 100) + 10;
+        printf("\nMenu de opcoes:");
+        for (i = 0; i < 11; i = i + 1)
+        {
+            if (i == 0)
+            {
+                printf("\n0 - Encerrar");
+                ED = ED + 1;
+            }
+            else
+            {
+                printf("\n%d - 0%d", i, ED);
+                ED = ED + 1;
+            }
+        }
+        printf("\n12 - 0%dE1", exercicio);
+        printf("\n13 - 0%dE2", exercicio);
+    }
+    else
+    {
+        ED = (ED * 100) + 10;
+        printf("\nMenu de opcoes:");
+        for (i = 0; i < 11; i = i + 1)
+        {
+            if (i == 0)
+            {
+                printf("\n0 - Encerrar");
+                ED = ED + 1;
+            }
+            else
+            {
+                printf("\n%d - %d", i, ED);
+                ED = ED + 1;
+            }
+        }
+        printf("\n12 - %dE1", exercicio);
+        printf("\n13 - %dE2", exercicio);
+    }
+}
 
 #endif
