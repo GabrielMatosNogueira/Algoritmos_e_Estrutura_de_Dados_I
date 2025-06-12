@@ -14,8 +14,10 @@ AEDS 1
 #include "io.h"
 #include "recuperacao_02.h"
 #include <stdio.h>
+#include <string.h>
 #include <stdbool.h>
 #define MAX 100
+#define MAX_06 4
 
 /**
  * @brief Primeira funcao do programa.
@@ -103,8 +105,8 @@ void metodo02()
     int temp = 0;
     int array[MAX];
     bool swap = false;
-    char *filename="metodo02_CRESCENTE.txt";
-    FILE *arquivo01=fopen(filename, "wt");
+    char *filename = "metodo02_CRESCENTE.txt";
+    FILE *arquivo01 = fopen(filename, "wt");
 
     // Semeando funcao geradora de numeros aleatorios
     srand(time(NULL));
@@ -158,9 +160,9 @@ void metodo02()
 void array_median(char *filename, int array[])
 {
     // Declaracao de variaveis
-    double median=0.0;
+    double median = 0.0;
 
-    median=((array[50]+array[51])/2);
+    median = ((array[50] + array[51]) / 2);
 
     IO_printf("\nO valor da mediana e': [%.1lf]\n", median);
 }
@@ -177,13 +179,13 @@ void array_median(char *filename, int array[])
 void metodo03(void)
 {
     // Declaracao de variaveis
-    int i=0;
-    bool swap=false;
-    int temp=0;
+    int i = 0;
+    bool swap = false;
+    int temp = 0;
     int array[MAX];
-    char *filename="metodo03_tabela.txt";
-    FILE *arquivo=fopen(filename, "wt");
-    
+    char *filename = "metodo03_tabela.txt";
+    FILE *arquivo = fopen(filename, "wt");
+
     // Semeando funcao geradora de numeros aleatorios
     srand(time(NULL));
 
@@ -218,7 +220,7 @@ void metodo03(void)
         }
     } while (swap);
 
-    for(i=0; i<MAX; i=i+1)
+    for (i = 0; i < MAX; i = i + 1)
     {
         IO_printf("%d\n", array[i]);
     }
@@ -230,155 +232,167 @@ void metodo03(void)
     getchar();
 }
 
-/**
- * @brief Quarta função do programa
- *
- * Gerar dois arquivos com números aleatórios: "metodo04_01.txt" e "metodo04_02.txt",
- * ler seus conteúdos em dois arranjos, filtrar os elementos **comuns entre eles**
- * sem repetições e gravar o resultado no arquivo "FILTRADOS.TXT".
- * A primeira linha do arquivo de saída contém a **quantidade de valores únicos filtrados**.
- *
- * Exemplo:
- * - Geração: método gera dois arquivos com até MAX valores aleatórios (0 a 100);
- * - Leitura: carrega os valores em arrays;
- * - Filtro: encontra os números comuns sem repetição;
- * - Gravação: salva no arquivo "FILTRADOS.TXT", com a quantidade na primeira linha.
- *
- * @param void
- * @return void
- */
-
-void metodo04(void)
+int search(int vetor[], int tamanho, int valor)
 {
-    // Declaracao de variaveis
-    int array1[MAX], array2[MAX], comuns[MAX];
-    int tam1 = 0, tam2 = 0, tam3 = 0;
-    int i = 0, j = 0, k = 0;
-    bool existe = false;
+    int i;
+    int posicao;
 
-    FILE *arquivo1 = fopen("metodo04_01.txt", "rt");
-    FILE *arquivo2 = fopen("metodo04_02.txt", "rt");
-    FILE *saida = NULL;
+    i = 0;
+    posicao = -1;
 
-    // Verificar se os arquivos foram abertos corretamente
-    if (arquivo1 != NULL && arquivo2 != NULL)
+    while (i < tamanho)
     {
-        // Ler dados do primeiro arquivo
-        while (tam1 < MAX && fscanf(arquivo1, "%d", &array1[tam1]) == 1)
+        if (vetor[i] == valor)
         {
-            tam1++;
-        }
-        fclose(arquivo1);
-
-        // Ler dados do segundo arquivo
-        while (tam2 < MAX && fscanf(arquivo2, "%d", &array2[tam2]) == 1)
-        {
-            tam2++;
-        }
-        fclose(arquivo2);
-
-        // Filtrar elementos comuns sem repetição
-        for (i = 0; i < tam1; i++)
-        {
-            for (j = 0; j < tam2; j++)
-            {
-                if (array1[i] == array2[j])
-                {
-                    existe = false;
-
-                    // Verificar se já foi adicionado
-                    for (k = 0; k < tam3; k++)
-                    {
-                        if (comuns[k] == array1[i])
-                        {
-                            existe = true;
-                        }
-                    }
-
-                    if (!existe)
-                    {
-                        comuns[tam3] = array1[i];
-                        tam3++;
-                    }
-                }
-            }
-        }
-
-        // Gravar no arquivo de saída
-        saida = fopen("FILTRADOS.TXT", "wt");
-
-        if (saida != NULL)
-        {
-            fprintf(saida, "%d\n", tam3); // primeira linha: quantidade
-            for (i = 0; i < tam3; i++)
-            {
-                fprintf(saida, "%d\n", comuns[i]);
-                IO_printf("Comum: %d\n", comuns[i]);
-            }
-            fclose(saida);
+            posicao = i;
+            i = tamanho;
         }
         else
         {
-            IO_print("Erro ao criar o arquivo FILTRADOS.TXT\n");
+            i++;
         }
     }
-    else
-    {
-        IO_print("Erro ao abrir os arquivos metodo04_01.txt ou metodo04_02.txt\n");
-    }
 
-    IO_print("Aperte ENTER para encerrar o programa.");
-    getchar();
+    return posicao;
 }
 
 /**
- * @brief Converter um vetor de bits binários para número decimal.
- *
- * Recebe um arranjo contendo apenas os valores 0 e 1, representando um número binário,
- * e retorna seu valor equivalente em decimal. O primeiro índice do vetor representa
- * o bit mais significativo (ordem direta).
- *
- * Exemplo:
- * - binario = {1, 0, 1, 1} → representa "1011" → resultado: 11
- *
- * @param binario Vetor de inteiros com valores 0 ou 1.
- * @param tamanho Quantidade de elementos no vetor binário.
- * @return Valor decimal correspondente ao número binário.
+ * @brief (Função 04) Lê dois arranjos de arquivos, filtra os elementos comuns
+ * sem repetições e grava o resultado em um terceiro arquivo.
+ * - Lê arranjo de 'metodo04_01.txt'.
+ * - Lê arranjo de 'metodo04_02.txt'.
+ * - Grava resultado em 'metodo04_03.txt'.
+ * @param void
+ * @return void
  */
+void metodo04()
+{
+    FILE *arquivo1 = fopen("metodo04_01.txt", "w");
+    FILE *arquivo2 = fopen("metodo04_02.txt", "w");
+    FILE *saida = NULL;
+
+    int arr1[MAX];
+    int arr2[MAX];
+    int comuns[MAX];
+
+    int tam1 = 0;
+    int tam2 = 0;
+    int tamComuns = 0;
+    int i = 0;
+    int num = 0;
+
+    if (arquivo1 == NULL || arquivo2 == NULL)
+    {
+        printf("Erro ao criar arquivos de entrada.\n");
+    }
+    else
+    {
+        srand(time(NULL));
+
+        i = 0;
+        while (i < MAX)
+        {
+            num = rand() % 101;
+            fprintf(arquivo1, "%d ", num);
+            i++;
+        }
+
+        i = 0;
+        while (i < MAX)
+        {
+            num = rand() % 101;
+            fprintf(arquivo2, "%d ", num);
+            i++;
+        }
+
+        fclose(arquivo1);
+        fclose(arquivo2);
+
+        arquivo1 = fopen("metodo04_01.txt", "r");
+        arquivo2 = fopen("metodo04_02.txt", "r");
+        saida = fopen("metodo04_03.txt", "w");
+
+        if (arquivo1 == NULL || arquivo2 == NULL || saida == NULL)
+        {
+            printf("Erro ao abrir arquivos para leitura.\n");
+        }
+        else
+        {
+            while (tam1 < MAX && fscanf(arquivo1, "%d", &arr1[tam1]) == 1)
+            {
+                tam1++;
+            }
+
+            while (tam2 < MAX && fscanf(arquivo2, "%d", &arr2[tam2]) == 1)
+            {
+                tam2++;
+            }
+
+            i = 0;
+            while (i < tam1)
+            {
+                if (search(arr2, tam2, arr1[i]) != -1)
+                {
+                    if (search(comuns, tamComuns, arr1[i]) == -1)
+                    {
+                        comuns[tamComuns] = arr1[i];
+                        tamComuns++;
+                    }
+                }
+
+                i++;
+            }
+
+            i = 0;
+            while (i < tamComuns)
+            {
+                fprintf(saida, "%d ", comuns[i]);
+                i++;
+            }
+
+            fclose(arquivo1);
+            fclose(arquivo2);
+            fclose(saida);
+
+            printf("Elementos comuns gravados em metodo04_03.txt\n");
+        }
+    }
+}
+
 int arranjo_paraDecimal(int binario[], int tamanho)
 {
-    int decimal = 0;
     int i = 0;
+    int decimal = 0;
+    int expoente = 0;
 
-    for (i = 0; i < tamanho; i = i + 1)
+    i = tamanho - 1;
+
+    while (i >= 0)
     {
-        decimal = decimal * 2 + binario[i];
+        decimal = decimal + binario[i] * (int)pow(2, expoente);
+        expoente = expoente + 1;
+        i = i - 1;
     }
 
     return decimal;
 }
 
-/**
- * @brief Verificar se uma string contém apenas caracteres '0' e '1'.
- *
- * Lê uma cadeia de caracteres e verifica se todos os símbolos são
- * binários válidos. Retorna verdadeiro se for válida, falso caso contrário.
- *
- * @param texto Ponteiro para a string a ser verificada.
- * @return `true` se for binária, `false` caso contrário.
- */
-bool ehBinario(char *texto)
+int validar_binario(char *str)
 {
     int i = 0;
-    while (texto[i] != '\0' && texto[i] != '\n')
+    int valido = 1;
+
+    while (str[i] != '\0' && str[i] != '\n')
     {
-        if (texto[i] != '0' && texto[i] != '1')
+        if (str[i] != '0' && str[i] != '1')
         {
-            return false;
+            valido = 0;
         }
-        i++;
+
+        i = i + 1;
     }
-    return true;
+
+    return valido;
 }
 
 /**
@@ -391,63 +405,391 @@ bool ehBinario(char *texto)
  * @param void
  * @return void
  */
-void metodo05(void)
+
+void metodo05()
 {
-    char linha[100];
-    int binario[100];
-    int tamanho = 0;
+    FILE *arquivo = NULL;
+    chars frase = NULL;
     int i = 0;
-    int valor = 0;
-    bool valido = true;
+    int j = 0;
+    char binario[MAX];
 
-    FILE *arquivo = fopen("BINARIOS1.TXT", "rt");
+    IO_println("\nMetodo05\n");
 
-    if (arquivo != NULL)
+    arquivo = fopen("frase.txt", "w");
+    if (arquivo == NULL)
     {
-        while (fgets(linha, sizeof(linha), arquivo) != NULL)
-        {
-            tamanho = 0;
-            valido = true;
-            i = 0;
-
-            // Validar e converter a linha para vetor de inteiros
-            while (linha[i] != '\0' && linha[i] != '\n' && valido)
-            {
-                if (linha[i] == '0')
-                {
-                    binario[tamanho++] = 0;
-                }
-                else if (linha[i] == '1')
-                {
-                    binario[tamanho++] = 1;
-                }
-                else
-                {
-                    valido = false;
-                }
-                i++;
-            }
-
-            if (valido && tamanho > 0)
-            {
-                valor = arranjo_paraDecimal(binario, tamanho);
-                IO_printf("Binario: %sDecimal: %d\n", linha, valor);
-            }
-            else
-            {
-                IO_printf("Linha ignorada (nao eh binario valido): %s", linha);
-            }
-        }
-
-        fclose(arquivo);
+        IO_println("Erro ao criar arquivo.");
     }
     else
     {
-        IO_print("Erro ao abrir o arquivo BINARIOS1.TXT\n");
+        frase = IO_readln("Digite uma frase para salvar no arquivo: ");
+        IO_fprintln(arquivo, frase); // grava a frase com \n
+        fclose(arquivo);
+        arquivo = NULL;
+
+        // Abrir para leitura
+        arquivo = fopen("frase.txt", "r");
+        if (arquivo == NULL)
+        {
+            IO_println("Erro ao abrir arquivo para leitura.");
+        }
+        else
+        {
+            // Ler linha inteira
+            frase = IO_freadln(arquivo);
+            fclose(arquivo);
+
+            IO_println("Conteudo do arquivo em binario:");
+
+            for (i = 0; frase[i] != EOS; i++)
+            {
+                for (j = 7; j >= 0; j--)
+                {
+                    binario[7 - j] = ((frase[i] >> j) & 1) ? '1' : '0';
+                }
+                binario[8] = EOS;
+                IO_print(binario);
+                IO_print(" ");
+            }
+            IO_println(ENDL);
+        }
+    }
+    free(frase);
+
+    IO_print("\nAperte ENTER para encerrar o programa.");
+    getchar();
+}
+
+/*
+ FAZER um programa para:
+ - ler dados para matrizes do arquivo MATRIZ1.TXT;
+ - ler um número inteiro ( N ), por vez, para indicar
+ a quantidade de linhas e colunas de uma matriz quadrada;
+ - montar, mostrar e gravar no arquivo MATRIZ2.TXT
+ uma matriz com a característica abaixo
+ (tridiagonal crescente).
+ Exemplo:
+ 10 9 0 0
+ 8 7 6 0
+ 0 5 4 3
+ 0 0 2 1
+*/
+void metodo06(void)
+{
+    // --- Declarações ---
+    int i = 0;
+    int j = 0;
+    int n = 0;
+    const char *filename = "metodo06_matriz.txt";
+    FILE *arquivo_saida = NULL;
+
+    n = IO_readint("\nDigite a ordem da matriz quadrada (N): ");
+
+    int matriz[n][n];
+    int contador = 3 * n - 2;
+
+    if (!(n <= 0))
+    {
+    }
+    else
+    {
+        IO_println("ERRO: A ordem deve ser um numero positivo.");
     }
 
-    IO_print("Aperte ENTER para encerrar o programa.");
+    // Abre o arquivo de saída para escrita
+    arquivo_saida = fopen(filename, "wt");
+
+    if (arquivo_saida != NULL)
+    {
+        IO_println("\nMatriz gerada e gravada em metodo06_matriz.txt:");
+
+        // Laço para construir, mostrar e gravar a matriz
+        for (i = 0; i < n; i = i + 1)
+        {
+            for (j = 0; j < n; j = j + 1)
+            {
+                // Verifica se a célula (i, j) pertence à tridiagonal
+                if (abs(i - j) <= 1)
+                {
+                    matriz[i][j] = contador;
+                    contador = contador - 1;
+                }
+                else
+                {
+                    matriz[i][j] = 0;
+                }
+
+                // Mostra o valor na tela
+                printf("%d\t", matriz[i][j]);
+
+                // Grava o valor no arquivo
+                fprintf(arquivo_saida, "%d\t", matriz[i][j]);
+            }
+            // Pula uma linha na tela e no arquivo ao final de cada linha da matriz
+            printf("\n");
+            fprintf(arquivo_saida, "\n");
+        }
+
+        // Fecha o arquivo após terminar de usá-lo
+        fclose(arquivo_saida);
+
+        IO_println("\nArquivo gravado com sucesso.");
+    }
+    else
+    {
+        IO_println("ERRO: Nao foi possivel criar o arquivo de saida.");
+    }
+
+    IO_println("\nAperte ENTER para encerrar o programa.");
     getchar();
+}
+
+/**
+ * @brief Gera, mostra e grava uma matriz tridiagonal secundária.
+ *
+ * A matriz é preenchida com valores crescentes a partir do canto
+ * inferior esquerdo, seguindo o padrão do exemplo.
+ */
+void metodo07(void)
+{
+    int n = 0;
+    const char *FILENAME = "metodo07_matriz02.txt";
+    FILE *arquivo = NULL;
+
+    printf("\nDigite a ordem da matriz quadrada (N): ");
+    scanf("%d", &n);
+    getchar();
+
+    if (!(n <= 0))
+    {
+        int matriz[n][n];
+        int contador = 1;
+
+        for (int i = n - 1; i >= 0; i--)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                if (abs((i + j) - (n - 1)) <= 1)
+                {
+                    matriz[i][j] = contador;
+                    contador++;
+                }
+                else
+                {
+                    matriz[i][j] = 0;
+                }
+            }
+        }
+
+        printf("\n--- Matriz Gerada ---\n");
+
+        arquivo = fopen(FILENAME, "wt");
+        if (arquivo != NULL)
+        {
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    printf("%d\t", matriz[i][j]);
+                    fprintf(arquivo, "%d\t", matriz[i][j]);
+                }
+                printf("\n");
+                fprintf(arquivo, "\n");
+            }
+        }
+        else
+        {
+            printf("ERRO: Nao foi possivel criar o arquivo %s.\n", FILENAME);
+        }
+    }
+    else
+    {
+        printf("\nERRO: A ordem da matriz deve ser um valor positivo.\n");
+    }
+
+    fclose(arquivo);
+    printf("\nMatriz gravada com sucesso em %s\n", FILENAME);
+
+    IO_println("\nAperte ENTER para encerrar o programa.");
+    getchar();
+}
+
+/*
+Ler uma matriz de um arquivo e verificar se possui a caracteristica de potencia
+por colunas
+*/
+void metodo08(void)
+{
+    // --- Declaração de todas as variáveis ---
+    char *filename = "metodo08.TXT";
+    FILE *arquivo;
+    int linhas = 0, colunas = 0;
+    int i = 0, j = 0;
+    bool eValida = true; // Variável de controle booleana
+
+    // --- 1. Criar um arquivo de exemplo para o teste ---
+    arquivo = fopen(filename, "wt"); // "wt" para escrever
+    if (arquivo == NULL)
+    {
+        printf("ERRO: Nao foi possivel criar o arquivo de teste.\n");
+        return; // Sai do método se houver erro
+    }
+    printf("Criando arquivo de teste '%s'...\n", filename);
+    fprintf(arquivo, "4\n4\n"); // Grava dimensões 4x4
+    for (i = 0; i < 4; i = i + 1)
+    {
+        for (j = 0; j < 4; j = j + 1)
+        {
+            fprintf(arquivo, "%d ", (int)pow(j + 1, i));
+        }
+        fprintf(arquivo, "\n");
+    }
+    fclose(arquivo); // Fecha o arquivo após a escrita
+
+    // --- 2. Abrir e ler o arquivo ---
+    arquivo = fopen(filename, "rt"); // "rt" para ler
+    if (arquivo == NULL)
+    {
+        printf("ERRO: Nao foi possivel abrir o arquivo '%s' para leitura.\n", filename);
+        return;
+    }
+
+    // Lê as dimensões do arquivo
+    fscanf(arquivo, "%d", &linhas);
+    fscanf(arquivo, "%d", &colunas);
+
+    // Declara a matriz com as dimensões lidas (VLA - C99)
+    int matriz[linhas][colunas];
+
+    printf("Matriz lida do arquivo:\n");
+    for (i = 0; i < linhas; i = i + 1)
+    {
+        for (j = 0; j < colunas; j = j + 1)
+        {
+            fscanf(arquivo, "%d", &matriz[i][j]);
+            printf("%d\t", matriz[i][j]);
+        }
+        printf("\n");
+    }
+    fclose(arquivo); // Fecha o arquivo após a leitura
+
+    // --- 3. Verificar a característica da matriz ---
+    for (i = 0; i < linhas; i = i + 1)
+    {
+        for (j = 0; j < colunas; j = j + 1)
+        {
+            int valorEsperado = (int)pow(j + 1, i);
+            if (matriz[i][j] != valorEsperado)
+            {
+                eValida = false; // Encontrou um erro, marca como inválida
+                break;
+            }
+        }
+        if (eValida == false)
+        {
+            break;
+        }
+    }
+
+    // --- 4. Exibir o resultado final ---
+    printf("\n--- Resultado da Verificacao ---\n");
+    if (eValida)
+    {
+        printf("A matriz possui a caracteristica de potencia por colunas.\n");
+    }
+    else
+    {
+        printf("A matriz NAO possui a caracteristica de potencia por colunas.\n");
+    }
+}
+
+/*
+FAZER um programa para:
+ - ler matriz do arquivo MATRIZ4.TXT;
+ - definir uma função lógica para verificar e
+ testar se a matriz lida apresenta a característica abaixo (potências decrescentes por colunas).
+ Exemplo:
+ 1 8 27 64
+ 1 4 9 16
+ 1 2 3 4
+ 1 1 1 1
+*/
+void metodo09(void)
+{
+    char* nome_arquivo = "matriz09.txt";
+    FILE* arquivo = NULL;
+    int ordem = 0;
+    int i = 0;
+    int j = 0;
+    int valor = 0;
+
+    printf("\nDigite a ordem da matriz quadrada: ");
+    scanf("%d", &ordem);
+    getchar();
+
+    if (ordem > 0)
+    {
+        arquivo = fopen(nome_arquivo, "wt");
+        if (arquivo != NULL)
+        {
+            fprintf(arquivo, "%d\n", ordem);
+            fprintf(arquivo, "%d\n", ordem);
+
+            for(i = 0; i < ordem; i = i + 1)
+            {
+                for(j = 0; j < ordem; j = j + 1)
+                {
+                    valor = (int)pow(j + 1, ordem - 1 - i);
+                    fprintf(arquivo, "%d ", valor);
+                }
+                fprintf(arquivo, "\n");
+            }
+            fclose(arquivo);
+            printf("\nArquivo '%s' gravado com sucesso.\n", nome_arquivo);
+
+            arquivo = fopen(nome_arquivo, "rt");
+            if (arquivo != NULL)
+            {
+                int linhas_lidas = 0;
+                int colunas_lidas = 0;
+                fscanf(arquivo, "%d", &linhas_lidas);
+                fscanf(arquivo, "%d", &colunas_lidas);
+
+                int matriz_lida[linhas_lidas][colunas_lidas];
+
+                printf("\nMatriz lida do arquivo:\n");
+                for(i = 0; i < linhas_lidas; i = i + 1)
+                {
+                    for(j = 0; j < colunas_lidas; j = j + 1)
+                    {
+                        fscanf(arquivo, "%d", &matriz_lida[i][j]);
+                        printf("%d\t", matriz_lida[i][j]);
+                    }
+                    printf("\n");
+                }
+                fclose(arquivo);
+            }
+            else
+            {
+                printf("\nERRO: Nao foi possivel ler o arquivo '%s'.\n", nome_arquivo);
+            }
+        }
+        else
+        {
+            printf("\nERRO: Nao foi possivel criar o arquivo '%s'.\n", nome_arquivo);
+        }
+    }
+    else
+    {
+        printf("\nERRO: A ordem deve ser um numero positivo.\n");
+    }
+}
+
+
+void metodo10(void)
+{
+
 }
 
 /**
@@ -481,12 +823,28 @@ int main(void)
             metodo03();
             break;
 
-            case 4:
+        case 4:
             metodo04();
             break;
-            
-            case 5:
+
+        case 5:
             metodo05();
+            break;
+
+        case 6:
+            metodo06();
+            break;
+        
+        case 7:
+            metodo07();
+            break;
+
+        case 8:
+            metodo08();
+            break;
+
+        case 9:
+            metodo09();
             break;
         }
 
