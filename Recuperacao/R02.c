@@ -786,10 +786,80 @@ void metodo09(void)
     }
 }
 
-
 void metodo10(void)
 {
+    const char* nome_arquivo = "metodo10.txt";
+    FILE* arquivo = NULL;
+    int quantidade = 0;
+    int i = 0;
+    double soma_precos = 0.0;
+    double preco_medio = 0.0;
+    int encontrados = 0;
 
+    arquivo = fopen(nome_arquivo, "w");
+
+    if (arquivo == NULL)
+    {
+        printf("ERRO: Nao foi possivel criar o arquivo de dados.\n");
+    }
+    else
+    {
+        // Grava os dados de exemplo no arquivo
+        fprintf(arquivo, "5\n");
+        fprintf(arquivo, "A 101 4.50\n");
+        fprintf(arquivo, "B 102 3.99\n");
+        fprintf(arquivo, "C 103 4.15\n");
+        fprintf(arquivo, "D 104 5.20\n");
+        fprintf(arquivo, "E 105 4.85\n");
+        fclose(arquivo);
+
+        // --- Parte 2: Ler os dados do arquivo ---
+        arquivo = fopen(nome_arquivo, "r");
+        if (arquivo == NULL)
+        {
+            printf("ERRO: Nao foi possivel ler o arquivo de dados.\n");
+        }
+        else
+        {
+            fscanf(arquivo, "%d", &quantidade);
+
+            char nomes[quantidade][50];
+            int codigos[quantidade];
+            double precos[quantidade];
+
+            for (i = 0; i < quantidade; i = i + 1)
+            {
+                fscanf(arquivo, "%s %d %lf", nomes[i], &codigos[i], &precos[i]);
+            }
+            fclose(arquivo);
+
+            for (i = 0; i < quantidade; i = i + 1)
+            {
+                soma_precos = soma_precos + precos[i];
+            }
+
+            if (quantidade > 0)
+            {
+                preco_medio = soma_precos / quantidade;
+                printf("\nO preco medio do produto e: R$ %.2f\n", preco_medio);
+            }
+
+            printf("\nSupermercados com precos abaixo da media:\n");
+            for (i = 0; i < quantidade; i = i + 1)
+            {
+                if (precos[i] < preco_medio)
+                {
+                    printf("- %s (Preco: R$ %.2f)\n", nomes[i], precos[i]);
+                    encontrados = encontrados + 1;
+                }
+            }
+
+            if (encontrados == 0)
+            {
+                printf("Nenhum supermercado encontrado com preco abaixo da media.\n");
+            }
+        }
+    }
 }
 
 /**
@@ -845,6 +915,10 @@ int main(void)
 
         case 9:
             metodo09();
+            break;
+        
+        case 10:
+            metodo10();
             break;
         }
 
