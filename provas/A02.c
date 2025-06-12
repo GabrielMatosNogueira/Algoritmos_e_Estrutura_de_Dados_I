@@ -1,232 +1,418 @@
+/*
+AEDS 1 - Atividade de Programacao
+0870863_Gabriel_Matos_Nogueira
+*/
+
+/*
+ * ----------------------------------------
+ * BIBLIOTECAS / DEPENDÊNCIAS
+ * ----------------------------------------
+ */
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
-typedef struct y
+/*
+ * ----------------------------------------
+ * DEFINICOES GLOBAIS
+ * ----------------------------------------
+ */
+#define MAX_STRING 256
+#define MAX_DIM 10
+
+typedef struct
 {
     int a;
     int b;
     int c;
-}y;
+} EstruturaY;
 
-void saida ( void )
+/*
+ * ----------------------------------------
+ * PROTÓTIPOS DAS FUNÇÕES (MÉTODOS)
+ * ----------------------------------------
+ */
+void metodo01(void);
+void metodo02(void);
+void metodo03(void);
+void metodo04(void);
+void metodo05(void);
+void metodo06(void);
+void metodo07(void);
+void metodo08(void);
+
+/*
+ * ----------------------------------------
+ * PROGRAMA PRINCIPAL
+ * ----------------------------------------
+ */
+int main(void)
 {
-    printf("Encerrando o programa...\n");
-}
-
-void questao_01 ( void )
-{
-    printf("\nQuestao 01\n");
-
-    int x = 0;
-    int y = 0;
-    int z = 0;
-    char r[50];
-    char *s = " abacate maduro barato";
-    r[0] = '\0';
-
-    while (z < strlen(s) && s[z] == ' ')
-    {
-        z = z + 1;
-        y = z;
-    }
-
-    while (y < strlen(s) && s[y] != ' ')
-    {
-        y = y + 1;
-    }
-
-    for (x = 0; x < (y - z); x++)
-    {
-        r[x] = s[y - 1 - x];
-    }
-    r[y - z] = '\0';
-
-    printf("String original: \"%s\"\n", s);
-    printf("Primeira palavra invertida: \"%s\"\n", r);
-    getchar();
-}
-
-int questao_02(int destination_array[], int source_array[], int n, int begin, int end)
-{
-    int m = 0;
-
-    while (begin <= end && begin < n)
-    {
-        destination_array[m] = source_array[begin];
-        m = m + 1;
-        ++begin;
-    }
-    return (m);
-}
-
-void questao_03(int p, int q, int m_rows, int n_cols, int matrix[][10])
-{
-    int z = 0;
-    int x = 0;
-    int i = 0;
-    int j = 0;
-
-    printf("\nQuestao 03 - Matriz antes da troca:\n");
-    for(i=0; i<m_rows; i=i+1)
-    {
-        for(j=0; j<n_cols; j=j+1)
-        {
-            printf("%d\t", matrix[i][j]);
-        }
-        printf("\n");
-    }
-
-    if (p >= 0 && p < m_rows && q >= 0 && q < m_rows)
-    {
-        for(x = 0; x < n_cols; x++)
-        {
-            z = matrix[p][x];
-            matrix[p][x] = matrix[q][x];
-            matrix[q][x] = z;
-        }
-    } else {
-        printf("Indices de linha invalidos para a troca.\n");
-    }
-
-    printf("\nQuestao 03 - Matriz depois da troca:\n");
-    for(i=0; i<m_rows; i=i+1)
-    {
-        for(j=0; j<n_cols; j=j+1)
-        {
-            printf("%d\t", matrix[i][j]);
-        }
-        printf("\n");
-    }
-}
-
-void questao_04 (int x, int y, int a[])
-{
-    if (x < y - 1)
-    {
-        a[x] = a[x] + a[y];
-        questao_04((x + y) / 2, y, a);
-    }
-    else
-    {
-        a[x] = 0;
-    }
-}
-
-void questao_05 (struct y *r)
-{
-    int d;
-    int e;
-
-    d=r->a;
-    e=r->c;
-    
-    if(d<e)
-    {
-        (*r).a=e;
-        (*r).c=d;
-
-        d=r->b;
-        e=r->c;
-
-        if(d<e)
-        {
-            r->b=e;
-            r->c=d;
-        }
-
-        d=(*r).a;
-        e=r->b;
-
-        if(d<e)
-        {
-            r->a=e;
-            (*r).b=d;
-        }
-    }
-
-};
-
-int main ( void )
-{
-    int a[] = {2,5,3,6,1,7,4};
-    int b[10];
+    // Variaveis
     int opcao = 0;
-    int num_elementos_copiados_q2 = 0;
-    int m[3][10]={{1,2,3,0,0,0,0,0,0,0}, {4,5,6,0,0,0,0,0,0,0}, {7,8,9,0,0,0,0,0,0,0}};
-    int a_02[]={1,2,3,4,5,6,7};
-    int size_a_02 = sizeof(a_02) / sizeof(a_02[0]);
-    struct y*r;
-    (*r).a=0;
-    (*r).b=1;
-    (*r).c=3;
+
+    // Laco do menu
     do
     {
-        printf("\n\n");
+        printf("\n\n--- MENU DE OPCOES ---\n");
+        printf("1) Metodo 01 - Inverter Palavra\n");
+        printf("2) Metodo 02 - Copiar Arranjo\n");
+        printf("3) Metodo 03 - Trocar Linhas de Matriz\n");
+        printf("4) Metodo 04 - Modificar Arranjo com Recursao\n");
+        printf("5) Metodo 05 - Ordenar Struct\n");
+        printf("6) Metodo 06 - Remover Espacos\n");
+        printf("7) Metodo 07 - Matriz Triangular Inferior\n");
+        printf("8) Metodo 08 - Desenhar Padrao\n");
+        printf("0) Sair\n");
 
-        printf("Q01) Qual a saida para ' abacate maduro barato'\n");
-        printf("Q02) Para int a[] = {2,5,3,6,1,7,4}, int b=[10], qual a saida b, se chamar questao_02 (b, a, 7, 2, 5)?\n");
-        printf("Q03) Qual a saida da matriz m[3][10] se chamar questao_03 (0, 2, 3, 3, m)?\n");
-        printf("Q04) Qual a saida para int a[]= {1,2,3,4,5,6,7} se chamar questao_04(0, 6, a[])?\n");
-        printf("Q05) Dada as definicoes abaixo: struct y {int a, b, c}\n");
-        printf("Q06) Dada uma cadeia de caracteres, se houver mais do que um espaco em branco seguido do outro, remover os excedentes deixando apenas um\nRestricao: Usar pelo menos dois while\n");
-
-        printf("\nDigite uma opcao: ");
+        printf("\nDigite a opcao desejada: ");
         scanf("%d", &opcao);
-        while (getchar() != '\n');
+        getchar();
 
         switch (opcao)
         {
-        case 0:
-            saida();
-            break;
-
-        case 1:
-            questao_01();
-            break;
-
-        case 2:
-            num_elementos_copiados_q2 = questao_02(b, a, 7, 2, 5);
-            printf("Questao 02\n");
-            printf("Conteudo de b[] depois da chamada questao_02(b, a, 7, 2, 5): {");
-            for (int i = 0; i < num_elementos_copiados_q2; i++)
-            {
-                printf("%d%s", b[i], (i == num_elementos_copiados_q2 - 1) ? "" : ", ");
-            }
-            printf("}\n");
-            break;
-
-        case 3:
-            questao_03(0, 2, 3, 3, m);
-            break;
-
-        case 4:
-            printf("\nQuestao 04\n");
-            printf("Array antes da chamada questao_04: {");
-            for (int i = 0; i < size_a_02; i++) {
-                printf("%d%s", a_02[i], (i == size_a_02 - 1) ? "" : ", ");
-            }
-            printf("}\n");
-
-            questao_04(0, 6, a_02);
-
-            printf("Array depois da chamada questao_04: {");
-            for (int i = 0; i < size_a_02; i++) {
-                printf("%d%s", a_02[i], (i == size_a_02 - 1) ? "" : ", ");
-            }
-            printf("}\n");
-            getchar();
-            break;
-        
-        case 5:
-            questao_05(r);
-            break;
-
-        default:
-            printf("Opcao invalida. Tente novamente.\n");
-            break;
+            case 1:  metodo01(); break;
+            case 2:  metodo02(); break;
+            case 3:  metodo03(); break;
+            case 4:  metodo04(); break;
+            case 5:  metodo05(); break;
+            case 6:  metodo06(); break;
+            case 7:  metodo07(); break;
+            case 8:  metodo08(); break;
+            case 0:  break; // Sair
+            default: printf("ERRO: Opcao invalida.\n"); break;
         }
     } while (opcao != 0);
 
+    printf("\nEncerrando o programa.\n");
     return 0;
+} // end main()
+
+/*
+ * ----------------------------------------
+ * IMPLEMENTAÇÃO DOS MÉTODOS
+ * ----------------------------------------
+ */
+
+/**
+ * Metodo 01 - Inverte a primeira palavra de uma string.
+ */
+void metodo01(void)
+{
+    // Variaveis
+    char resultado[50] = {0};
+    char *string_original = " abacate maduro barato";
+    int i = 0;
+    int inicio = 0;
+    int fim = 0;
+    int tamanho = 0;
+
+    printf("\n");
+
+    while (string_original[inicio] == ' ')
+    {
+        inicio = inicio + 1;
+    }
+    fim = inicio;
+    while (string_original[fim] != '\0' && string_original[fim] != ' ')
+    {
+        fim = fim + 1;
+    }
+
+    tamanho = fim - inicio;
+    for (i = 0; i < tamanho; i = i + 1)
+    {
+        resultado[i] = string_original[fim - 1 - i];
+    }
+    resultado[tamanho] = '\0';
+
+    printf("Original: \"%s\"\n", string_original);
+    printf("Invertida: \"%s\"\n", resultado);
+
+    printf("\nAperte ENTER para continuar.\n");
+    getchar();
+}
+
+/**
+ * Metodo 02 - Copia um sub-arranjo.
+ */
+void metodo02(void)
+{
+    // Variaveis
+    int origem[] = {2, 5, 3, 6, 1, 7, 4};
+    int destino[10] = {0};
+    int i = 0;
+    int cont = 0;
+
+    printf("\n");
+
+    for (i = 2; i <= 5; i = i + 1)
+    {
+        destino[cont] = origem[i];
+        cont = cont + 1;
+    }
+
+    printf("Sub-arranjo copiado: {");
+    for (i = 0; i < cont; i = i + 1)
+    {
+        printf("%d", destino[i]);
+        if (i < cont - 1)
+        {
+            printf(", ");
+        }
+    }
+    printf("}\n");
+
+    printf("\nAperte ENTER para continuar.\n");
+    getchar();
+}
+
+/**
+ * Metodo 03 - Troca duas linhas de uma matriz.
+ */
+void metodo03(void)
+{
+    // Variaveis
+    int matriz[MAX_DIM][MAX_DIM] = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+    int i = 0;
+    int j = 0;
+    int temp = 0;
+    int linha1 = 0;
+    int linha2 = 2;
+    int colunas = 3;
+
+    printf("\n");
+
+    printf("Matriz original:\n");
+    for (i = 0; i < 3; i = i + 1)
+    {
+        for (j = 0; j < 3; j = j + 1)
+        {
+            printf("%d\t", matriz[i][j]);
+        }
+        printf("\n");
+    }
+
+    for (j = 0; j < colunas; j = j + 1)
+    {
+        temp = matriz[linha1][j];
+        matriz[linha1][j] = matriz[linha2][j];
+        matriz[linha2][j] = temp;
+    }
+
+    printf("\nMatriz com linhas trocadas:\n");
+    for (i = 0; i < 3; i = i + 1)
+    {
+        for (j = 0; j < 3; j = j + 1)
+        {
+            printf("%d\t", matriz[i][j]);
+        }
+        printf("\n");
+    }
+
+    printf("\nAperte ENTER para continuar.\n");
+    getchar();
+}
+
+void aux_metodo04(int inicio, int fim, int arranjo[])
+{
+    if (inicio < fim - 1)
+    {
+        arranjo[inicio] = arranjo[inicio] + arranjo[fim];
+        aux_metodo04((inicio + fim) / 2, fim, arranjo);
+    }
+    else
+    {
+        arranjo[inicio] = 0;
+    }
+}
+
+/**
+ * Metodo 04 - Modifica um arranjo de forma recursiva.
+ */
+void metodo04(void)
+{
+    // Variaveis
+    int arranjo[] = {1, 2, 3, 4, 5, 6, 7};
+    int i = 0;
+
+    printf("\n");
+    printf("Arranjo antes: {1, 2, 3, 4, 5, 6, 7}\n");
+    aux_metodo04(0, 6, arranjo);
+
+    printf("Arranjo depois: {");
+    for (i = 0; i < 7; i = i + 1)
+    {
+        printf("%d", arranjo[i]);
+        if (i < 6)
+        {
+            printf(", ");
+        }
+    }
+    printf("}\n");
+
+    printf("\nAperte ENTER para continuar.\n");
+    getchar();
+}
+
+/**
+ * Metodo 05 - Ordena os membros de uma struct.
+ */
+void metodo05(void)
+{
+    // Variaveis
+    EstruturaY dados = {5, 10, 2};
+    int temp = 0;
+
+    printf("\n");
+    printf("Struct antes: {a:%d, b:%d, c:%d}\n", dados.a, dados.b, dados.c);
+
+    if (dados.a < dados.b) { temp = dados.a; dados.a = dados.b; dados.b = temp; }
+    if (dados.b < dados.c) { temp = dados.b; dados.b = dados.c; dados.c = temp; }
+    if (dados.a < dados.b) { temp = dados.a; dados.a = dados.b; dados.b = temp; }
+
+    printf("Struct depois: {a:%d, b:%d, c:%d}\n", dados.a, dados.b, dados.c);
+
+    printf("\nAperte ENTER para continuar.\n");
+    getchar();
+}
+
+/**
+ * Metodo 06 - Remove espacos em branco duplicados.
+ */
+void metodo06(void)
+{
+    // Variaveis
+    char texto[MAX_STRING] = {0};
+    int i = 0;
+    int j = 0;
+
+    printf("\n");
+    printf("Digite uma string com espacos extras: ");
+    fgets(texto, sizeof(texto), stdin);
+    texto[strcspn(texto, "\n")] = 0;
+
+    while (texto[i] != '\0')
+    {
+        texto[j] = texto[i];
+        j = j + 1;
+        if (texto[i] == ' ')
+        {
+            while (texto[i + 1] == ' ')
+            {
+                i = i + 1;
+            }
+        }
+        i = i + 1;
+    }
+    texto[j] = '\0';
+
+    printf("String corrigida: \"%s\"\n", texto);
+    printf("\nAperte ENTER para continuar.\n");
+    getchar();
+}
+
+/**
+ * Metodo 07 - Gera matriz triangular inferior.
+ */
+void metodo07(void)
+{
+    // Variaveis
+    int matriz[MAX_DIM][MAX_DIM] = {0};
+    int tamanho = 0;
+    int i = 0;
+    int j = 0;
+
+    printf("\n");
+    printf("Digite o tamanho da matriz: ");
+    scanf("%d", &tamanho);
+    getchar();
+
+    if (tamanho > 0 && tamanho <= MAX_DIM)
+    {
+        for (i = 0; i < tamanho; i = i + 1)
+        {
+            for (j = 0; j < tamanho; j = j + 1)
+            {
+                printf("Elemento [%d][%d]: ", i, j);
+                scanf("%d", &matriz[i][j]);
+                getchar();
+            }
+        }
+        printf("\nMatriz Triangular Inferior:\n");
+        for (i = 0; i < tamanho; i = i + 1)
+        {
+            for (j = 0; j < tamanho; j = j + 1)
+            {
+                if (j > i)
+                {
+                    printf("0\t");
+                }
+                else
+                {
+                    printf("%d\t", matriz[i][j]);
+                }
+            }
+            printf("\n");
+        }
+    }
+    else
+    {
+        printf("ERRO: Tamanho invalido.\n");
+    }
+
+    printf("\nAperte ENTER para continuar.\n");
+    getchar();
+}
+
+/**
+ * Metodo 08 - Desenha um padrao de asteriscos.
+ */
+void metodo08(void)
+{
+    // Variaveis
+    int n = 0;
+    int i = 0;
+    int j = 0;
+
+    printf("\n");
+    printf("Digite o numero base para o padrao: ");
+    scanf("%d", &n);
+    gerchar();
+
+    if (n > 3)
+    {
+        i = 1;
+        while (i < n)
+        {
+            j = 0;
+            while (j < i)
+            {
+                printf("*");
+                j = j + 1;
+            }
+            printf("\n");
+            i = i + 1;
+        }
+        i = n - 2;
+        while (i >= 1)
+        {
+            j = 0;
+            while (j < i)
+            {
+                printf("*");
+                j = j + 1;
+            }
+            printf("\n");
+            i = i - 1;
+        }
+    }
+    else
+    {
+        printf("ERRO: Numero deve ser maior que 3.\n");
+    }
+    
+    printf("\nAperte ENTER para continuar.\n");
+    getchar();
 }
