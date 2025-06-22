@@ -7,8 +7,6 @@ ED15
 DEPENDENCIAS/BIBLIOTECAS
 */
 #include "io.hpp"
-#include "ED15.hpp"
-#define MAX 100
 using namespace std;
 
 // Declaracao de funcoes
