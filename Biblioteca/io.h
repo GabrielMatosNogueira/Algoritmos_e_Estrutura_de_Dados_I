@@ -111,7 +111,7 @@ void IO_methods(int ED)
     ED = (ED * 100) + 10;
     cout << endl
          << "Menu de opcoes:";
-    for (i = 0; i < 11; i = i + 1)
+    for (i = 0; i < 12; i = i + 1)
     {
 
       if (i == 0)
@@ -126,8 +126,8 @@ void IO_methods(int ED)
         ED = ED + 1;
       }
     }
-    printf("\n11 - 0%dE1", exercicio);
-    printf("\n12 - 0%dE2", exercicio);
+    printf("\n12 - %dE1", exercicio);
+    printf("\n13 - 0%dE2", exercicio);
   }
 
   else
@@ -150,8 +150,8 @@ void IO_methods(int ED)
         ED = ED + 1;
       }
     }
-    printf("\n12 - %dE1", exercicio);
-    printf("\n13 - %dE2", exercicio);
+    printf("\n11 - %dE1", exercicio);
+    printf("\n12 - %dE2", exercicio);
   }
 }
 
