@@ -15,7 +15,7 @@
 ## 3. Especificações do Desenvolvimento
 
 ### 3.1 Linguagem de Programação
-- **Linguagem Utilizada**: C
+- **Linguagem Utilizada**: C e C++
 
 ### 3.2 Ambiente de Desenvolvimento e Testes
 - **Sistema Operacional**: Linux Ubuntu 24.04.2 LTS
