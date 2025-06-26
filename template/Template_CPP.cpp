@@ -12,19 +12,6 @@ using namespace std;
 // Declaracao de funcoes
 
 /**
- * METODO 01
- * @brief
- * 
- * 
- * 
- * @param
- * @return
-**/
-void metodo01(void)
-{
-}
-
-/**
  * AUXILIAR 01
  * @brief
  * 
@@ -37,9 +24,8 @@ void auxiliar_01(void)
 {
 }
 
-
 /**
- * METODO 02
+ * METODO 01
  * @brief
  * 
  * 
@@ -47,7 +33,7 @@ void auxiliar_01(void)
  * @param
  * @return
 **/
-void metodo02(void)
+void metodo01(void)
 {
 }
 
@@ -65,6 +51,32 @@ void auxiliar_02(void)
 }
 
 /**
+ * METODO 02
+ * @brief
+ * 
+ * 
+ * 
+ * @param
+ * @return
+**/
+void metodo02(void)
+{
+}
+
+/**
+ * AUXILIAR 03
+ * @brief
+ * 
+ * 
+ * 
+ * @param
+ * @return
+**/
+void auxiliar_03(void)
+{
+}
+
+/**
  * METODO 03
  * @brief
  * 
@@ -77,9 +89,8 @@ void metodo03(void)
 {
 }
 
-
 /**
- * AUXILIAR 03
+ * AUXILIAR 04
  * @brief
  * 
  * 
@@ -87,7 +98,7 @@ void metodo03(void)
  * @param
  * @return
 **/
-void auxiliar_03(void)
+void auxiliar_04(void)
 {
 }
 
@@ -105,7 +116,7 @@ void metodo04(void)
 }
 
 /**
- * AUXILIAR 04
+ * AUXILIAR 05
  * @brief
  * 
  * 
@@ -113,7 +124,7 @@ void metodo04(void)
  * @param
  * @return
 **/
-void auxiliar_04(void)
+void auxiliar_05(void)
 {
 }
 
