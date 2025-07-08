@@ -27,7 +27,7 @@ class Array
     Array(const int n)
     {
         this->n=n;
-        this->data = new int[this->n];
+        this->data = new int[n];
         for(int i=0; i<this->n; i=i+1)
         {
             this->data[i]=0;
@@ -95,6 +95,45 @@ class Array
         }
         return maior_Valor_Impar;
     }
+
+    /**
+     * READ ARRAY FROM FILE
+     * @brief Metodo para leitura de um arquivo
+     * @details
+     * @param
+     * @return this->data
+     */
+    int* read_Array_From_File(void)
+    {
+        int i=0;
+        ifstream file;
+        string filename="ED11_metodo03.txt";
+        file.open(filename);
+
+        while(!(file.eof()))                    // Leitura até o final do arquivo
+        {
+            file >> this->data[i];
+            i=i+1;
+        }
+        return this->data;
+    }
+
+    /**
+     * SUM INTERVAL
+     */
+    int sum_Interval(const int lower, const int higher)
+    {
+        int soma=lower;
+        if(lower<higher)
+        {
+            for(int i=lower; i<higher; i=i+1)
+            {
+                soma=soma+data[i];
+            }
+        }
+        cout << endl << soma << endl; 
+        return soma;
+    }
 };
 
 /**
@@ -151,11 +190,36 @@ void metodo02(void)
 }
 
 /**
- * @brief METODO 03
- * @details
- * @param
- * @return 
+ * METODO 03
+ * @brief Procurar o maior valor multiplo de 3 dentro de um vetor estático
+ * @details Dentro da classe Array, será criado uma funcao chamada @name Multiple_03 do tipo inteiro que retornará o maior valor
+ * @param void
+ * @return void
  */
+void metodo03(void)
+{
+    int n=0;
+    Array array03(40);
+
+    IO_println("Metodo 03");
+    array03.print_Array();
+    array03.read_Array_From_File();
+    array03.print_Array();
+
+    getchar();
+}
+
+void metodo04(void)
+{
+    IO_println("Metodo 04");
+    Array array04(10);
+
+    array04.print_Array();
+    array04.read_Array_From_File();
+    array04.print_Array();
+    array04.sum_Interval(1, 10);
+    getchar();
+}
 
 /**
  * @brief METODO PRINCIPAL
@@ -179,6 +243,14 @@ int main(void)
             
             case 2:
             metodo02();
+            break;
+
+            case 3:
+            metodo03();
+            break;
+
+            case 4:
+            metodo04();
             break;
         }
     }while(opcao!=0);
