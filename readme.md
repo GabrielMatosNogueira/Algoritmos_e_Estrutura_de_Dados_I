@@ -22,7 +22,10 @@
 - **Compilador**: `gcc`
 - **Versão do GCC**: `gcc 13.2.0`
 
-## 4. Contato
+## 4. Material do Projeto
+O material (.pdf) relacionado ao projeto não está disponível, pois o conteúdo é privado.
+
+## 5. Contato
 Caso haja dúvidas ou sugestões relacionadas ao projeto, entre em contato:
 - **Email**: [gabrielmatosnogueiracompsci@gmail.com](mailto:gabrielmatosnogueiracompsci@gmail.com)
 - **Perfil Acadêmico/Profissional**: [LinkedIn](https://www.linkedin.com/in/gabriel-nogueira-145478323/)
