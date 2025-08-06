@@ -1,0 +1,20 @@
+# Excluir pasta com material do professor
+2025-1_aed1/
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+
+# Arquivos de editor
+*.swp
+*.swo
+*~
+
+# Arquivos executáveis
+*.exe
+*.out
+*.o
+
+# Arquivos temporários
+*.tmp
+*.temp
